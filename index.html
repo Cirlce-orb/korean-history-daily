@@ -1,4 +1,3 @@
-index.html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -34,6 +33,11 @@ header{
 
 .header-info{
   text-align:right;
+}
+
+.date{
+  color:#776c61;
+  font-size:14px;
 }
 
 .weather{
@@ -182,6 +186,7 @@ footer{
 }
 
 @media(max-width:700px){
+
   header{
     padding:20px;
   }
@@ -228,212 +233,119 @@ footer{
 <body>
 
 <header>
+
   <div class="logo">1일 1한국사 인물</div>
 
   <div class="header-info">
     <div class="date" id="today"></div>
-    <div class="weather" id="weather">날씨를 불러오는 중...</div>
+    <div class="weather" id="weather">
+      날씨를 불러오는 중...
+    </div>
   </div>
+
 </header>
 
 <main>
 
 <section class="intro">
+
   <h1>오늘의 역사 인물</h1>
-  <p>오늘 하루, 한 사람의 삶을 통해 역사를 만나보세요.</p>
+
+  <p>
+    오늘 하루, 한 사람의 삶을 통해 역사를 만나보세요.
+  </p>
+
 </section>
+
 
 <section class="card">
-  <div class="image" id="personIcon">歷</div>
+
+  <div class="image" id="personIcon">
+    歷
+  </div>
 
   <div class="info">
-    <div class="label">TODAY'S HISTORICAL FIGURE</div>
-    <h2 class="name" id="personName"></h2>
+
+    <div class="label">
+      TODAY'S HISTORICAL FIGURE
+    </div>
+
+    <h2 class="name" id="personName">
+      불러오는 중...
+    </h2>
+
     <div class="period" id="personPeriod"></div>
+
     <p class="description" id="personDescription"></p>
-    <button onclick="showDetail()">인물 자세히 보기</button>
+
+    <button onclick="showDetail()">
+      인물 자세히 보기
+    </button>
+
   </div>
+
 </section>
 
+
 <div class="controls">
-  <input id="search" placeholder="인물 이름을 검색해보세요">
+
+  <input
+    id="search"
+    placeholder="인물 이름을 검색해보세요"
+  >
+
   <select id="era">
-    <option value="all">전체 시대</option>
-    <option value="고대">고대</option>
-    <option value="고려">고려</option>
-    <option value="조선">조선</option>
-    <option value="근현대">근현대</option>
+
+    <option value="all">
+      전체 시대
+    </option>
+
+    <option value="고대">
+      고대
+    </option>
+
+    <option value="고려">
+      고려
+    </option>
+
+    <option value="조선">
+      조선
+    </option>
+
+    <option value="근대">
+      근대
+    </option>
+
+    <option value="현대">
+      현대
+    </option>
+
   </select>
+
 </div>
+
 
 <section class="grid" id="people"></section>
 
 </main>
 
+
 <footer>
   Made by 16기 역덕 for 지현T
 </footer>
 
+
 <script>
 
-const people = [
-{
- name:"세종대왕",
- era:"조선",
- period:"1397–1450",
- icon:"世",
- description:"조선 제4대 왕으로 훈민정음 창제를 비롯해 과학·문화·농업 등 여러 분야의 발전을 이끌었습니다."
-},
-{
- name:"이순신",
- era:"조선",
- period:"1545–1598",
- icon:"忠",
- description:"임진왜란 당시 조선 수군을 이끈 장군으로 여러 해전에서 활약했습니다."
-},
-{
- name:"정약용",
- era:"조선",
- period:"1762–1836",
- icon:"茶",
- description:"실학자로서 행정과 제도, 과학기술 등에 대해 다양한 개혁안을 제시했습니다."
-},
-{
- name:"장영실",
- era:"조선",
- period:"15세기",
- icon:"天",
- description:"조선의 과학기술 발전에 기여한 과학자로 여러 천문·측정 기구의 제작에 참여했습니다."
-},
-{
- name:"광개토대왕",
- era:"고대",
- period:"374–413",
- icon:"廣",
- description:"고구려의 영토를 크게 확장한 왕으로 알려져 있으며 광개토대왕릉비에 그의 업적이 기록되어 있습니다."
-},
-{
- name:"왕건",
- era:"고려",
- period:"877–943",
- icon:"高",
- description:"후삼국을 통일하고 고려를 세운 인물로 고려의 첫 번째 왕이 되었습니다."
-},
-{
- name:"김구",
- era:"근현대",
- period:"1876–1949",
- icon:"白",
- description:"대한민국 임시정부에서 활동한 독립운동가로 자주독립과 문화국가를 강조했습니다."
-},
-{
- name:"안중근",
- era:"근현대",
- period:"1879–1910",
- icon:"安",
- description:"독립운동가로 활동했으며 1909년 하얼빈에서 이토 히로부미를 저격했습니다."
-},
-{
- name:"유관순",
- era:"근현대",
- period:"1902–1920",
- icon:"柳",
- description:"3·1운동에 참여하고 아우내 장터 만세운동을 이끈 독립운동가입니다."
-}
-];
+let people = [];
+let todayPerson = null;
+
+
+/* =========================
+   날짜
+========================= */
 
 const today = new Date();
-
-const dateText =
-today.getFullYear()+"년 "+
-(today.getMonth()+1)+"월 "+
-today.getDate()+"일";
-
-document.getElementById("today").textContent = dateText;
-
-const dayOfYear = Math.floor(
-(today - new Date(today.getFullYear(),0,0)) / 86400000
-);
-
-const todayPerson = people[dayOfYear % people.length];
-
-function displayToday(){
-
- document.getElementById("personName").textContent=todayPerson.name;
- document.getElementById("personPeriod").textContent=
- todayPerson.era+" · "+todayPerson.period;
-
- document.getElementById("personDescription").textContent=
- todayPerson.description;
-
- document.getElementById("personIcon").textContent=
- todayPerson.icon;
-}
-
-function renderPeople(){
-
- const search=document.getElementById("search").value.toLowerCase();
- const era=document.getElementById("era").value;
-
- const filtered=people.filter(person=>{
-
-   const matchName=person.name.toLowerCase().includes(search);
-   const matchEra=era==="all" || person.era===era;
-
-   return matchName && matchEra;
- });
-
- const container=document.getElementById("people");
-
- container.innerHTML=filtered.map(person=>`
-
-   <div class="person" onclick="selectPerson('${person.name}')">
-
-     <h3>${person.name}</h3>
-
-     <p>${person.era} · ${person.period}</p>
-
-   </div>
-
- `).join("");
-}
-
-function selectPerson(name){
-
- const person=people.find(p=>p.name===name);
-
- document.getElementById("personName").textContent=person.name;
- document.getElementById("personPeriod").textContent=
- person.era+" · "+person.period;
-
- document.getElementById("personDescription").textContent=
- person.description;
-
- document.getElementById("personIcon").textContent=
- person.icon;
-
- window.scrollTo({
-   top:0,
-   behavior:"smooth"
- });
-}
-
-function showDetail(){
-
- alert(
- todayPerson.name+
- "\n\n"+
- todayPerson.description+
- "\n\n이 인물에 대한 더 자세한 역사 자료는 추후 계속 추가할 예정입니다."
- );
-
-}
-
-document.getElementById("search").addEventListener("input",renderPeople);
-document.getElementById("era").addEventListener("change",renderPeople);
-
-displayToday();
-renderPeople();
 
 const weekdays = [
   "일요일",
@@ -451,9 +363,243 @@ document.getElementById("today").textContent =
   today.getDate() + "일 " +
   weekdays[today.getDay()];
 
+
+/* =========================
+   오늘의 인물
+========================= */
+
+function getTodayPerson(){
+
+  if(people.length === 0){
+    return null;
+  }
+
+  const dayOfYear = Math.floor(
+    (today - new Date(today.getFullYear(), 0, 0))
+    / 86400000
+  );
+
+  return people[dayOfYear % people.length];
+
+}
+
+
+/* =========================
+   오늘의 인물 표시
+========================= */
+
+function displayToday(){
+
+  todayPerson = getTodayPerson();
+
+  if(!todayPerson){
+    return;
+  }
+
+  document.getElementById("personName").textContent =
+    todayPerson.name;
+
+  document.getElementById("personPeriod").textContent =
+    todayPerson.era + " · " +
+    todayPerson.birth_death;
+
+  document.getElementById("personDescription").textContent =
+    todayPerson.description;
+
+  /*
+    기존 데이터에는 icon 필드가 없으므로
+    인물 이름의 첫 글자를 표시
+  */
+
+  document.getElementById("personIcon").textContent =
+    todayPerson.name.charAt(0);
+
+}
+
+
+/* =========================
+   인물 목록
+========================= */
+
+function renderPeople(){
+
+  const search =
+    document.getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const era =
+    document.getElementById("era").value;
+
+
+  const filtered = people.filter(person => {
+
+    const matchName =
+      person.name
+      .toLowerCase()
+      .includes(search);
+
+    const matchEra =
+      era === "all" ||
+      person.era === era;
+
+    return matchName && matchEra;
+
+  });
+
+
+  const container =
+    document.getElementById("people");
+
+
+  container.innerHTML =
+    filtered.map(person => `
+
+      <div
+        class="person"
+        onclick="selectPerson(${JSON.stringify(person.name)})"
+      >
+
+        <h3>
+          ${person.name}
+        </h3>
+
+        <p>
+          ${person.era} · ${person.birth_death}
+        </p>
+
+      </div>
+
+    `).join("");
+
+
+  if(filtered.length === 0){
+
+    container.innerHTML = `
+      <p style="
+        grid-column:1/-1;
+        text-align:center;
+        padding:40px;
+        color:#82776c;
+      ">
+        검색 결과가 없습니다.
+      </p>
+    `;
+
+  }
+
+}
+
+
+/* =========================
+   인물 선택
+========================= */
+
+function selectPerson(name){
+
+  const person =
+    people.find(p => p.name === name);
+
+  if(!person){
+    return;
+  }
+
+  document.getElementById("personName").textContent =
+    person.name;
+
+  document.getElementById("personPeriod").textContent =
+    person.era + " · " +
+    person.birth_death;
+
+  document.getElementById("personDescription").textContent =
+    person.description;
+
+  document.getElementById("personIcon").textContent =
+    person.name.charAt(0);
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =========================
+   자세히 보기
+========================= */
+
+function showDetail(){
+
+  if(!todayPerson){
+    return;
+  }
+
+
+  const activities =
+    todayPerson.major_activities || [];
+
+
+  let message =
+    todayPerson.name +
+    "\n\n" +
+    todayPerson.description;
+
+
+  if(activities.length > 0){
+
+    message +=
+      "\n\n주요 활동\n\n" +
+      activities.join("\n");
+
+  }
+
+
+  if(todayPerson.source_url){
+
+    message +=
+      "\n\n출처\n" +
+      todayPerson.source_url;
+
+  }
+
+
+  alert(message);
+
+}
+
+
+/* =========================
+   검색 / 필터
+========================= */
+
+document
+  .getElementById("search")
+  .addEventListener(
+    "input",
+    renderPeople
+  );
+
+
+document
+  .getElementById("era")
+  .addEventListener(
+    "change",
+    renderPeople
+  );
+
+
+/* =========================
+   날씨
+========================= */
+
 async function getWeather(){
 
-  const weatherElement = document.getElementById("weather");
+  const weatherElement =
+    document.getElementById("weather");
+
 
   try{
 
@@ -461,43 +607,67 @@ async function getWeather(){
       "https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul"
     );
 
+
     if(!response.ok){
-      throw new Error("Weather request failed");
+      throw new Error(
+        "Weather request failed"
+      );
     }
 
-    const data = await response.json();
+
+    const data =
+      await response.json();
+
 
     const temperature =
-      Math.round(data.current.temperature_2m);
+      Math.round(
+        data.current.temperature_2m
+      );
+
 
     const max =
-      Math.round(data.daily.temperature_2m_max[0]);
+      Math.round(
+        data.daily.temperature_2m_max[0]
+      );
+
 
     const min =
-      Math.round(data.daily.temperature_2m_min[0]);
+      Math.round(
+        data.daily.temperature_2m_min[0]
+      );
 
-    const code = data.current.weather_code;
+
+    const code =
+      data.current.weather_code;
+
 
     let weatherText = "맑음";
+
 
     if(code >= 1 && code <= 3){
       weatherText = "구름";
     }
+
     else if(code >= 45 && code <= 48){
       weatherText = "안개";
     }
+
     else if(code >= 51 && code <= 67){
       weatherText = "비";
     }
+
     else if(code >= 71 && code <= 77){
       weatherText = "눈";
     }
+
     else if(code >= 80 && code <= 82){
       weatherText = "소나기";
     }
+
     else if(code >= 95){
       weatherText = "뇌우";
     }
+
 
     weatherElement.textContent =
       "서울 · " +
@@ -510,14 +680,106 @@ async function getWeather(){
       min +
       "°C";
 
+
   }catch(error){
+
+    console.error(
+      "날씨 불러오기 실패:",
+      error
+    );
+
 
     weatherElement.textContent =
       "서울 · 날씨 정보를 불러올 수 없습니다.";
 
   }
+
 }
 
+
+/* =========================
+   people.json 불러오기
+========================= */
+
+async function loadPeople(){
+
+  try{
+
+    const response =
+      await fetch("./people.json");
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "people.json HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if(!Array.isArray(data)){
+
+      throw new Error(
+        "people.json의 형식이 올바르지 않습니다."
+      );
+
+    }
+
+
+    people = data.filter(person =>
+      person &&
+      person.name &&
+      person.era
+    );
+
+
+    if(people.length === 0){
+
+      throw new Error(
+        "사용할 수 있는 인물 데이터가 없습니다."
+      );
+
+    }
+
+
+    displayToday();
+    renderPeople();
+
+
+  }catch(error){
+
+    console.error(
+      "people.json 불러오기 실패:",
+      error
+    );
+
+
+    document.getElementById(
+      "personName"
+    ).textContent =
+      "인물 데이터를 불러올 수 없습니다.";
+
+    document.getElementById(
+      "personDescription"
+    ).textContent =
+      "people.json 파일이 index.html과 같은 폴더에 있는지 확인해주세요.";
+
+  }
+
+}
+
+
+/* =========================
+   실행
+========================= */
+
+loadPeople();
 getWeather();
 
 </script>
