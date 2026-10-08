@@ -461,6 +461,10 @@ function getTodayPerson(){
    오늘의 인물 표시
 ========================= */
 
+/* =========================
+   오늘의 인물 표시
+========================= */
+
 async function loadPersonImage(person){
 
   const imageBox =
@@ -507,14 +511,21 @@ async function loadPersonImage(person){
           page =>
             page.imageinfo &&
             page.imageinfo.length > 0 &&
-            page.imageinfo[0].thumburl
+            (
+              page.imageinfo[0].thumburl ||
+              page.imageinfo[0].url
+            )
         );
 
       if(page){
 
+        const imageUrl =
+          page.imageinfo[0].thumburl ||
+          page.imageinfo[0].url;
+
         imageBox.innerHTML = `
           <img
-            src="${page.imageinfo[0].thumburl}"
+            src="${imageUrl}"
             alt="${person.name}"
           >
         `;
@@ -525,7 +536,7 @@ async function loadPersonImage(person){
 
   }catch(error){
 
-    console.log(
+    console.error(
       "이미지 불러오기 실패:",
       error
     );
@@ -533,6 +544,8 @@ async function loadPersonImage(person){
   }
 
 }
+
+
 function displayToday(){
 
   todayPerson = getTodayPerson();
@@ -551,26 +564,14 @@ function displayToday(){
   document.getElementById("personDescription").textContent =
     todayPerson.description;
 
-  function displayToday(){
-
-  todayPerson = getTodayPerson();
-
-  if(!todayPerson){
-    return;
-  }
-
-  document.getElementById("personName").textContent =
-    todayPerson.name;
-
-  document.getElementById("personPeriod").textContent =
-    todayPerson.era + " · " +
-    todayPerson.birth_death;
-
-  document.getElementById("personDescription").textContent =
-    todayPerson.description;
-
   loadPersonImage(todayPerson);
+
 }
+
+
+/* =========================
+   인물 목록
+========================= */
 
 /* =========================
    인물 목록
