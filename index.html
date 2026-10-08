@@ -471,22 +471,22 @@ async function loadPersonImage(person){
 
   try{
 
-    const apiUrl =
+    const searchUrl =
       "https://ko.wikipedia.org/w/api.php" +
       "?action=query" +
       "&format=json" +
       "&formatversion=2" +
-      "&prop=pageimages" +
-      "&piprop=thumbnail" +
-      "&pithumbsize=800" +
       "&generator=search" +
       "&gsrsearch=" +
       encodeURIComponent(person.name) +
-      "&gsrlimit=5" +
+      "&gsrlimit=10" +
+      "&prop=pageimages" +
+      "&piprop=thumbnail" +
+      "&pithumbsize=800" +
       "&origin=*";
 
     const response =
-      await fetch(apiUrl);
+      await fetch(searchUrl);
 
     if(!response.ok){
       return;
@@ -497,8 +497,7 @@ async function loadPersonImage(person){
 
     if(
       data.query &&
-      data.query.pages &&
-      data.query.pages.length > 0
+      data.query.pages
     ){
 
       const page =
@@ -514,7 +513,6 @@ async function loadPersonImage(person){
           <img
             src="${page.thumbnail.source}"
             alt="${person.name}"
-            loading="lazy"
           >
         `;
 
@@ -525,7 +523,7 @@ async function loadPersonImage(person){
   }catch(error){
 
     console.log(
-      person.name + " 이미지 불러오기 실패",
+      "이미지 불러오기 실패:",
       error
     );
 
