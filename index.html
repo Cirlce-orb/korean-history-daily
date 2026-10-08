@@ -471,22 +471,23 @@ async function loadPersonImage(person){
 
   try{
 
-    const searchUrl =
-      "https://ko.wikipedia.org/w/api.php" +
+    const apiUrl =
+      "https://commons.wikimedia.org/w/api.php" +
       "?action=query" +
       "&format=json" +
       "&formatversion=2" +
       "&generator=search" +
       "&gsrsearch=" +
       encodeURIComponent(person.name) +
+      "&gsrnamespace=6" +
       "&gsrlimit=10" +
-      "&prop=pageimages" +
-      "&piprop=thumbnail" +
-      "&pithumbsize=800" +
+      "&prop=imageinfo" +
+      "&iiprop=url" +
+      "&iiurlwidth=800" +
       "&origin=*";
 
     const response =
-      await fetch(searchUrl);
+      await fetch(apiUrl);
 
     if(!response.ok){
       return;
@@ -497,21 +498,23 @@ async function loadPersonImage(person){
 
     if(
       data.query &&
-      data.query.pages
+      data.query.pages &&
+      data.query.pages.length > 0
     ){
 
       const page =
         data.query.pages.find(
           page =>
-            page.thumbnail &&
-            page.thumbnail.source
+            page.imageinfo &&
+            page.imageinfo.length > 0 &&
+            page.imageinfo[0].thumburl
         );
 
       if(page){
 
         imageBox.innerHTML = `
           <img
-            src="${page.thumbnail.source}"
+            src="${page.imageinfo[0].thumburl}"
             alt="${person.name}"
           >
         `;
@@ -548,8 +551,9 @@ function displayToday(){
   document.getElementById("personDescription").textContent =
     todayPerson.description;
 
-  loadPersonImage(todayPerson);
-}
+  function displayToday(){
+
+  todayPerson = getTodayPerson();
 
   if(!todayPerson){
     return;
