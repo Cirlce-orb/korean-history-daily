@@ -1,0 +1,432 @@
+index.html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1일 1한국사 인물</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:#f5f0e7;
+  color:#332d28;
+  font-family:'Noto Serif KR',serif;
+}
+
+header{
+  max-width:1100px;
+  margin:auto;
+  padding:28px 25px 18px;
+  border-bottom:1px solid #d8cec0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:25px;
+  font-weight:700;
+}
+
+.date{
+  color:#776c61;
+  font-size:14px;
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:55px 25px;
+}
+
+.intro{
+  text-align:center;
+  margin-bottom:45px;
+}
+
+.intro h1{
+  font-size:42px;
+  font-weight:600;
+  margin-bottom:12px;
+}
+
+.intro p{
+  color:#796f66;
+}
+
+.card{
+  background:#fffdf9;
+  border:1px solid #ded5c9;
+  display:grid;
+  grid-template-columns:1fr 1.15fr;
+  min-height:440px;
+  box-shadow:0 8px 30px rgba(70,55,40,.06);
+}
+
+.image{
+  background:#e7dfd3;
+  min-height:440px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:80px;
+  color:#817467;
+}
+
+.info{
+  padding:55px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.label{
+  color:#917b6f;
+  font-size:14px;
+  margin-bottom:15px;
+}
+
+.name{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.period{
+  color:#81766c;
+  margin-bottom:28px;
+}
+
+.description{
+  line-height:2;
+  font-size:16px;
+  margin-bottom:30px;
+}
+
+button{
+  border:1px solid #917b6f;
+  background:transparent;
+  color:#66564d;
+  padding:12px 20px;
+  font-family:inherit;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  background:#917b6f;
+  color:white;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  margin:35px 0;
+}
+
+input,select{
+  background:#fffdf9;
+  border:1px solid #d8cec0;
+  padding:13px 15px;
+  font-family:inherit;
+  color:#443a33;
+}
+
+input{
+  flex:1;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.person{
+  background:#fffdf9;
+  border:1px solid #ded5c9;
+  padding:25px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.person:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(60,45,30,.08);
+}
+
+.person h3{
+  margin-bottom:8px;
+}
+
+.person p{
+  color:#82776c;
+  font-size:13px;
+}
+
+footer{
+  border-top:1px solid #d8cec0;
+  text-align:center;
+  padding:30px;
+  color:#85796e;
+  font-size:13px;
+  margin-top:40px;
+}
+
+@media(max-width:700px){
+  header{
+    padding:20px;
+  }
+
+  .logo{
+    font-size:20px;
+  }
+
+  main{
+    padding:35px 18px;
+  }
+
+  .intro h1{
+    font-size:31px;
+  }
+
+  .card{
+    grid-template-columns:1fr;
+  }
+
+  .image{
+    min-height:230px;
+  }
+
+  .info{
+    padding:30px;
+  }
+
+  .name{
+    font-size:32px;
+  }
+
+  .controls{
+    flex-direction:column;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">1일 1한국사 인물</div>
+  <div class="date" id="today"></div>
+</header>
+
+<main>
+
+<section class="intro">
+  <h1>오늘의 역사 인물</h1>
+  <p>오늘 하루, 한 사람의 삶을 통해 역사를 만나보세요.</p>
+</section>
+
+<section class="card">
+  <div class="image" id="personIcon">歷</div>
+
+  <div class="info">
+    <div class="label">TODAY'S HISTORICAL FIGURE</div>
+    <h2 class="name" id="personName"></h2>
+    <div class="period" id="personPeriod"></div>
+    <p class="description" id="personDescription"></p>
+    <button onclick="showDetail()">인물 자세히 보기</button>
+  </div>
+</section>
+
+<div class="controls">
+  <input id="search" placeholder="인물 이름을 검색해보세요">
+  <select id="era">
+    <option value="all">전체 시대</option>
+    <option value="고대">고대</option>
+    <option value="고려">고려</option>
+    <option value="조선">조선</option>
+    <option value="근현대">근현대</option>
+  </select>
+</div>
+
+<section class="grid" id="people"></section>
+
+</main>
+
+<footer>
+  Made by 16기 역덕 for 지현T
+</footer>
+
+<script>
+
+const people = [
+{
+ name:"세종대왕",
+ era:"조선",
+ period:"1397–1450",
+ icon:"世",
+ description:"조선 제4대 왕으로 훈민정음 창제를 비롯해 과학·문화·농업 등 여러 분야의 발전을 이끌었습니다."
+},
+{
+ name:"이순신",
+ era:"조선",
+ period:"1545–1598",
+ icon:"忠",
+ description:"임진왜란 당시 조선 수군을 이끈 장군으로 여러 해전에서 활약했습니다."
+},
+{
+ name:"정약용",
+ era:"조선",
+ period:"1762–1836",
+ icon:"茶",
+ description:"실학자로서 행정과 제도, 과학기술 등에 대해 다양한 개혁안을 제시했습니다."
+},
+{
+ name:"장영실",
+ era:"조선",
+ period:"15세기",
+ icon:"天",
+ description:"조선의 과학기술 발전에 기여한 과학자로 여러 천문·측정 기구의 제작에 참여했습니다."
+},
+{
+ name:"광개토대왕",
+ era:"고대",
+ period:"374–413",
+ icon:"廣",
+ description:"고구려의 영토를 크게 확장한 왕으로 알려져 있으며 광개토대왕릉비에 그의 업적이 기록되어 있습니다."
+},
+{
+ name:"왕건",
+ era:"고려",
+ period:"877–943",
+ icon:"高",
+ description:"후삼국을 통일하고 고려를 세운 인물로 고려의 첫 번째 왕이 되었습니다."
+},
+{
+ name:"김구",
+ era:"근현대",
+ period:"1876–1949",
+ icon:"白",
+ description:"대한민국 임시정부에서 활동한 독립운동가로 자주독립과 문화국가를 강조했습니다."
+},
+{
+ name:"안중근",
+ era:"근현대",
+ period:"1879–1910",
+ icon:"安",
+ description:"독립운동가로 활동했으며 1909년 하얼빈에서 이토 히로부미를 저격했습니다."
+},
+{
+ name:"유관순",
+ era:"근현대",
+ period:"1902–1920",
+ icon:"柳",
+ description:"3·1운동에 참여하고 아우내 장터 만세운동을 이끈 독립운동가입니다."
+}
+];
+
+const today = new Date();
+
+const dateText =
+today.getFullYear()+"년 "+
+(today.getMonth()+1)+"월 "+
+today.getDate()+"일";
+
+document.getElementById("today").textContent = dateText;
+
+const dayOfYear = Math.floor(
+(today - new Date(today.getFullYear(),0,0)) / 86400000
+);
+
+const todayPerson = people[dayOfYear % people.length];
+
+function displayToday(){
+
+ document.getElementById("personName").textContent=todayPerson.name;
+ document.getElementById("personPeriod").textContent=
+ todayPerson.era+" · "+todayPerson.period;
+
+ document.getElementById("personDescription").textContent=
+ todayPerson.description;
+
+ document.getElementById("personIcon").textContent=
+ todayPerson.icon;
+}
+
+function renderPeople(){
+
+ const search=document.getElementById("search").value.toLowerCase();
+ const era=document.getElementById("era").value;
+
+ const filtered=people.filter(person=>{
+
+   const matchName=person.name.toLowerCase().includes(search);
+   const matchEra=era==="all" || person.era===era;
+
+   return matchName && matchEra;
+ });
+
+ const container=document.getElementById("people");
+
+ container.innerHTML=filtered.map(person=>`
+
+   <div class="person" onclick="selectPerson('${person.name}')">
+
+     <h3>${person.name}</h3>
+
+     <p>${person.era} · ${person.period}</p>
+
+   </div>
+
+ `).join("");
+}
+
+function selectPerson(name){
+
+ const person=people.find(p=>p.name===name);
+
+ document.getElementById("personName").textContent=person.name;
+ document.getElementById("personPeriod").textContent=
+ person.era+" · "+person.period;
+
+ document.getElementById("personDescription").textContent=
+ person.description;
+
+ document.getElementById("personIcon").textContent=
+ person.icon;
+
+ window.scrollTo({
+   top:0,
+   behavior:"smooth"
+ });
+}
+
+function showDetail(){
+
+ alert(
+ todayPerson.name+
+ "\n\n"+
+ todayPerson.description+
+ "\n\n이 인물에 대한 더 자세한 역사 자료는 추후 계속 추가할 예정입니다."
+ );
+
+}
+
+document.getElementById("search").addEventListener("input",renderPeople);
+document.getElementById("era").addEventListener("change",renderPeople);
+
+displayToday();
+renderPeople();
+
+</script>
+
+</body>
+</html>
