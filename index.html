@@ -475,63 +475,148 @@ async function loadPersonImage(person){
 
   try{
 
-    const apiUrl =
+    // 1차: 위키미디어 공용에서 인물 이름으로 이미지 검색
+    const searchUrl =
       "https://commons.wikimedia.org/w/api.php" +
       "?action=query" +
       "&format=json" +
-      "&formatversion=2" +
+      "&list=search" +
+      "&srnamespace=6" +
+      "&srlimit=10" +
+      "&srsearch=" +
+      encodeURIComponent(person.name) +
+      "&origin=*";
+
+    const searchResponse =
+      await fetch(searchUrl);
+
+    if(!searchResponse.ok){
+      throw new Error("Commons 검색 실패");
+    }
+
+    const searchData =
+      await searchResponse.json();
+
+    const results =
+      searchData.query &&
+      searchData.query.search;
+
+    if(results && results.length > 0){
+
+      for(const result of results){
+
+        const title =
+          result.title;
+
+        const imageUrl =
+          "https://commons.wikimedia.org/w/api.php" +
+          "?action=query" +
+          "&format=json" +
+          "&prop=imageinfo" +
+          "&iiprop=url" +
+          "&iiurlwidth=800" +
+          "&titles=" +
+          encodeURIComponent(title) +
+          "&origin=*";
+
+        const imageResponse =
+          await fetch(imageUrl);
+
+        if(!imageResponse.ok){
+          continue;
+        }
+
+        const imageData =
+          await imageResponse.json();
+
+        const pages =
+          imageData.query &&
+          imageData.query.pages;
+
+        if(!pages){
+          continue;
+        }
+
+        const page =
+          Object.values(pages)[0];
+
+        if(
+          page &&
+          page.imageinfo &&
+          page.imageinfo.length > 0
+        ){
+
+          const info =
+            page.imageinfo[0];
+
+          const finalUrl =
+            info.thumburl ||
+            info.url;
+
+          if(finalUrl){
+
+            imageBox.innerHTML = `
+              <img
+                src="${finalUrl}"
+                alt="${person.name}"
+              >
+            `;
+
+            return;
+          }
+        }
+      }
+    }
+
+    // 2차: 한국어 위키백과에서 검색
+    const wikiUrl =
+      "https://ko.wikipedia.org/w/api.php" +
+      "?action=query" +
+      "&format=json" +
       "&generator=search" +
       "&gsrsearch=" +
       encodeURIComponent(person.name) +
-      "&gsrnamespace=6" +
-      "&gsrlimit=10" +
-      "&prop=imageinfo" +
-      "&iiprop=url" +
-      "&iiurlwidth=800" +
+      "&gsrnamespace=0" +
+      "&gsrlimit=5" +
+      "&prop=pageimages" +
+      "&piprop=thumbnail" +
+      "&pithumbsize=800" +
       "&origin=*";
 
-    const response =
-      await fetch(apiUrl);
+    const wikiResponse =
+      await fetch(wikiUrl);
 
-    if(!response.ok){
+    if(!wikiResponse.ok){
       return;
     }
 
-    const data =
-      await response.json();
+    const wikiData =
+      await wikiResponse.json();
 
     if(
-      data.query &&
-      data.query.pages &&
-      data.query.pages.length > 0
+      wikiData.query &&
+      wikiData.query.pages
     ){
 
+      const pages =
+        Object.values(wikiData.query.pages);
+
       const page =
-        data.query.pages.find(
+        pages.find(
           page =>
-            page.imageinfo &&
-            page.imageinfo.length > 0 &&
-            (
-              page.imageinfo[0].thumburl ||
-              page.imageinfo[0].url
-            )
+            page.thumbnail &&
+            page.thumbnail.source
         );
 
       if(page){
 
-        const imageUrl =
-          page.imageinfo[0].thumburl ||
-          page.imageinfo[0].url;
-
         imageBox.innerHTML = `
           <img
-            src="${imageUrl}"
+            src="${page.thumbnail.source}"
             alt="${person.name}"
           >
         `;
-
       }
-
     }
 
   }catch(error){
@@ -542,36 +627,7 @@ async function loadPersonImage(person){
     );
 
   }
-
 }
-
-
-function displayToday(){
-
-  todayPerson = getTodayPerson();
-
-  if(!todayPerson){
-    return;
-  }
-
-  document.getElementById("personName").textContent =
-    todayPerson.name;
-
-  document.getElementById("personPeriod").textContent =
-    todayPerson.era + " · " +
-    todayPerson.birth_death;
-
-  document.getElementById("personDescription").textContent =
-    todayPerson.description;
-
-  loadPersonImage(todayPerson);
-
-}
-
-
-/* =========================
-   인물 목록
-========================= */
 
 /* =========================
    인물 목록
