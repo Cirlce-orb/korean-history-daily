@@ -531,43 +531,17 @@ function selectPerson(name){
    자세히 보기
 ========================= */
 
-function showDetail(){
 
-  if(!todayPerson){
+function showDetail() {
+  if (!todayPerson) {
     return;
   }
 
+  const type = todayPerson.type || "person";
+  const id = encodeURIComponent(todayPerson.name);
 
-  const activities =
-    todayPerson.major_activities || [];
-
-
-  let message =
-    todayPerson.name +
-    "\n\n" +
-    todayPerson.description;
-
-
-  if(activities.length > 0){
-
-    message +=
-      "\n\n주요 활동\n\n" +
-      activities.join("\n");
-
-  }
-
-
-  if(todayPerson.source_url){
-
-    message +=
-      "\n\n출처\n" +
-      todayPerson.source_url;
-
-  }
-
-
-  alert(message);
-
+  window.location.href =
+    `detail.html?type=${type}&id=${id}`;
 }
 
 
