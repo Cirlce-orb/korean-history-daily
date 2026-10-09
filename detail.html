@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History Detail · Daily History Fact</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:#f5f0e7;
+  color:#332d28;
+  font-family:'Noto Serif KR',serif;
+  line-height:1.8;
+}
+
+header{
+  max-width:1000px;
+  margin:auto;
+  padding:25px;
+  border-bottom:1px solid #d8cec0;
+}
+
+.logo{
+  color:#332d28;
+  text-decoration:none;
+  font-size:23px;
+  font-weight:700;
+}
+
+main{
+  max-width:900px;
+  margin:auto;
+  padding:40px 25px 70px;
+}
+
+.back{
+  border:1px solid #917b6f;
+  background:transparent;
+  color:#66564d;
+  padding:10px 18px;
+  font-family:inherit;
+  cursor:pointer;
+  margin-bottom:30px;
+}
+
+.back:hover{background:#917b6f;color:white}
+
+.hero{
+  background:#fffdf9;
+  border:1px solid #ded5c9;
+}
+
+.hero-image{
+  min-height:300px;
+  background:#e7dfd3;
+  color:#817467;
+  font-size:100px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.hero-image img{
+  width:100%;
+  max-height:460px;
+  object-fit:contain;
+  display:block;
+}
+
+.hero-info{padding:35px}
+
+.type{
+  color:#917b6f;
+  font-size:13px;
+  letter-spacing:1px;
+}
+
+h1{
+  font-size:40px;
+  line-height:1.4;
+  margin:12px 0;
+}
+
+.period{color:#81766c;margin-bottom:25px}
+
+.description{white-space:pre-line}
+
+.section{
+  margin-top:25px;
+  padding:30px;
+  background:#fffdf9;
+  border:1px solid #ded5c9;
+}
+
+h2{font-size:23px;margin-bottom:15px}
+
+ul{padding-left:22px}
+li{margin:8px 0}
+
+.fact{
+  padding:12px 0;
+  border-bottom:1px solid #e8dfd4;
+}
+
+.fact:last-child{border-bottom:0}
+
+.fact strong{
+  display:block;
+  color:#917b6f;
+  font-size:13px;
+  margin-bottom:4px;
+}
+
+.source{
+  display:inline-block;
+  margin-top:10px;
+  color:#715747;
+  overflow-wrap:anywhere;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#85796e;
+  font-size:13px;
+}
+
+@media(max-width:600px){
+  header{padding:20px}
+  main{padding:25px 16px 50px}
+  .hero-image{min-height:220px}
+  .hero-info{padding:24px}
+  h1{font-size:31px}
+  .section{padding:23px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a class="logo" href="index.html">Daily History Fact</a>
+</header>
+
+<main>
+  <button class="back" onclick="location.href='index.html'">
+    ← 메인으로 돌아가기
+  </button>
+
+  <article class="hero">
+    <div class="hero-image" id="image">歷</div>
+
+    <div class="hero-info">
+      <div class="type" id="type"></div>
+      <h1 id="name">불러오는 중...</h1>
+      <div class="period" id="period"></div>
+      <p class="description" id="description"></p>
+    </div>
+  </article>
+
+  <section class="section" id="activitiesSection" hidden>
+    <h2 id="activitiesTitle">주요 활동</h2>
+    <ul id="activities"></ul>
+  </section>
+
+  <section class="section" id="artifactSection" hidden>
+    <h2>유물 정보</h2>
+    <div class="fact" id="materialFact"></div>
+    <div class="fact" id="purposeFact"></div>
+    <div class="fact" id="valueFact"></div>
+  </section>
+
+  <section class="section">
+    <h2>출처 및 참고 자료</h2>
+    <p id="sourceMessage">출처 정보를 확인하고 있습니다.</p>
+    <a class="source" id="source" target="_blank"
+       rel="noopener noreferrer" hidden>원문 자료 열기 ↗</a>
+  </section>
+</main>
+
+<footer>Daily History Fact · Korean History</footer>
+
+<script>
+async function loadDetail(){
+  const params = new URLSearchParams(location.search);
+  const type = params.get("type") || "person";
+  const name = params.get("id");
+
+  if(!name){
+    showError("인물 또는 유물 정보가 지정되지 않았습니다.");
+    return;
+  }
+
+  const isArtifact = type === "artifact";
+  const file = isArtifact ? "./artifacts.json" : "./people.json";
+
+  try{
+    const response = await fetch(file);
+
+    if(!response.ok){
+      throw new Error(file + " 파일을 불러오지 못했습니다.");
+    }
+
+    const data = await response.json();
+
+    const item = data.find(entry => entry.name === name);
+
+    if(!item){
+      showError("해당 항목을 찾을 수 없습니다.");
+      return;
+    }
+
+    document.title = item.name + " | Daily History Fact";
+
+    document.getElementById("type").textContent =
+      isArtifact ? "HISTORICAL ARTIFACT · 역사 유물"
+                 : "HISTORICAL FIGURE · 역사 인물";
+
+    document.getElementById("name").textContent = item.name;
+
+    document.getElementById("period").textContent =
+      [item.era, item.birth_death || item.period]
+        .filter(Boolean).join(" · ");
+
+    document.getElementById("description").textContent =
+      item.description || "등록된 설명이 없습니다.";
+
+    document.getElementById("image").textContent =
+      item.name.charAt(0);
+
+    if(isArtifact){
+      document.getElementById("artifactSection").hidden = false;
+
+      setFact("materialFact", "재료", item.material);
+      setFact("purposeFact", "용도", item.purpose);
+      setFact("valueFact", "역사적 가치", item.historical_value);
+
+    }else{
+      const activities = Array.isArray(item.major_activities)
+        ? item.major_activities : [];
+
+      if(activities.length){
+        document.getElementById("activitiesSection").hidden = false;
+
+        const list = document.getElementById("activities");
+        activities.forEach(activity => {
+          const li = document.createElement("li");
+          li.textContent = activity;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    if(item.source_url){
+      const source = document.getElementById("source");
+      source.href = item.source_url;
+      source.hidden = false;
+      document.getElementById("sourceMessage").textContent =
+        "이 항목의 참고 자료입니다.";
+    }else{
+      document.getElementById("sourceMessage").textContent =
+        "아직 출처 주소가 등록되지 않았습니다.";
+    }
+
+  }catch(error){
+    console.error(error);
+    showError("데이터를 불러오지 못했습니다. 파일 이름과 JSON 형식을 확인해주세요.");
+  }
+}
+
+function setFact(id, label, value){
+  const element = document.getElementById(id);
+
+  if(!value){
+    element.hidden = true;
+    return;
+  }
+
+  const heading = document.createElement("strong");
+  heading.textContent = label;
+
+  const text = document.createElement("p");
+  text.textContent = value;
+
+  element.replaceChildren(heading, text);
+}
+
+function showError(message){
+  document.getElementById("name").textContent = "항목을 열 수 없습니다.";
+  document.getElementById("description").textContent = message;
+  document.getElementById("period").textContent = "";
+  document.getElementById("sourceMessage").textContent =
+    "메인 화면으로 돌아가 다시 검색해주세요.";
+}
+
+loadDetail();
+</script>
+
+</body>
+</html>
