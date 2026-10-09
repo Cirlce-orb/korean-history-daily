@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1일 1한국사 인물</title>
+<title>Daily History Fact</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
-
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
@@ -19,11 +20,12 @@ body{
 header{
   max-width:1100px;
   margin:auto;
-  padding:28px 25px 18px;
+  padding:25px;
   border-bottom:1px solid #d8cec0;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:15px;
 }
 
 .logo{
@@ -31,149 +33,125 @@ header{
   font-weight:700;
 }
 
-.header-info{
-  text-align:right;
-}
-
-.date{
-  color:#776c61;
-  font-size:14px;
-}
-
-.weather{
-  color:#917b6f;
-  font-size:13px;
-  margin-top:5px;
-}
+.header-info{text-align:right}
+.date{color:#776c61;font-size:14px}
+.weather{color:#917b6f;font-size:13px;margin-top:5px}
 
 main{
   max-width:1100px;
   margin:auto;
-  padding:55px 25px;
+  padding:48px 25px;
 }
 
-.intro{
-  text-align:center;
-  margin-bottom:45px;
-}
-
-.intro h1{
-  font-size:42px;
-  font-weight:600;
-  margin-bottom:12px;
-}
-
-.intro p{
-  color:#796f66;
-}
+.intro{text-align:center;margin-bottom:35px}
+.intro h1{font-size:40px;font-weight:600;margin-bottom:12px}
+.intro p{color:#796f66;line-height:1.8}
 
 .card{
   background:#fffdf9;
   border:1px solid #ded5c9;
   display:grid;
   grid-template-columns:1fr 1.15fr;
-  min-height:440px;
+  min-height:400px;
   box-shadow:0 8px 30px rgba(70,55,40,.06);
+  cursor:pointer;
+  transition:.2s;
 }
+
+.card:hover{box-shadow:0 12px 32px rgba(70,55,40,.12)}
 
 .image{
   background:#e7dfd3;
-  min-height:440px;
+  min-height:400px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:80px;
+  overflow:hidden;
+  font-size:100px;
   color:#817467;
 }
 
+.image img{width:100%;height:100%;object-fit:cover}
+
 .info{
-  padding:55px;
+  padding:45px;
   display:flex;
   flex-direction:column;
   justify-content:center;
 }
 
-.label{
-  color:#917b6f;
-  font-size:14px;
-  margin-bottom:15px;
-}
+.label{color:#917b6f;font-size:13px;margin-bottom:15px}
+.name{font-size:38px;margin-bottom:10px}
+.period{color:#81766c;margin-bottom:24px}
+.description{line-height:2;font-size:16px;margin-bottom:25px}
 
-.name{
-  font-size:42px;
-  margin-bottom:10px;
-}
-
-.period{
-  color:#81766c;
-  margin-bottom:28px;
-}
-
-.description{
-  line-height:2;
-  font-size:16px;
-  margin-bottom:30px;
-}
-
-button{
+.detail-button{
+  align-self:flex-start;
   border:1px solid #917b6f;
   background:transparent;
   color:#66564d;
   padding:12px 20px;
   font-family:inherit;
   cursor:pointer;
-  transition:.2s;
 }
 
-button:hover{
-  background:#917b6f;
-  color:white;
-}
+.detail-button:hover{background:#917b6f;color:white}
 
-.controls{
-  display:flex;
-  gap:10px;
-  margin:35px 0;
-}
+.search-section{margin-top:55px}
+.search-title{font-size:25px;margin-bottom:10px}
+.search-subtitle{color:#796f66;font-size:14px;margin-bottom:20px}
+
+.controls{display:flex;gap:10px;margin-bottom:25px}
 
 input,select{
   background:#fffdf9;
   border:1px solid #d8cec0;
-  padding:13px 15px;
+  padding:14px 15px;
   font-family:inherit;
   color:#443a33;
+  font-size:15px;
+  min-width:0;
 }
 
-input{
-  flex:1;
-}
+input{flex:1}
+select{width:150px}
 
-.grid{
+.results{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
 }
 
-.person{
+.result-card{
   background:#fffdf9;
   border:1px solid #ded5c9;
-  padding:25px;
+  padding:22px;
   cursor:pointer;
   transition:.2s;
+  min-width:0;
 }
 
-.person:hover{
+.result-card:hover{
   transform:translateY(-3px);
   box-shadow:0 8px 20px rgba(60,45,30,.08);
 }
 
-.person h3{
-  margin-bottom:8px;
+.result-type{
+  color:#917b6f;
+  font-size:12px;
+  margin-bottom:10px;
 }
 
-.person p{
+.result-card h3{font-size:21px;margin-bottom:8px}
+.result-period{color:#82776c;font-size:13px;margin-bottom:12px}
+.result-description{font-size:14px;line-height:1.8;color:#514941}
+
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:35px 15px;
   color:#82776c;
-  font-size:13px;
+  line-height:1.8;
 }
 
 footer{
@@ -186,46 +164,19 @@ footer{
 }
 
 @media(max-width:700px){
-
-  header{
-    padding:20px;
-  }
-
-  .logo{
-    font-size:20px;
-  }
-
-  main{
-    padding:35px 18px;
-  }
-
-  .intro h1{
-    font-size:31px;
-  }
-
-  .card{
-    grid-template-columns:1fr;
-  }
-
-  .image{
-    min-height:230px;
-  }
-
-  .info{
-    padding:30px;
-  }
-
-  .name{
-    font-size:32px;
-  }
-
-  .controls{
-    flex-direction:column;
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
+  header{padding:20px;align-items:flex-start}
+  .logo{font-size:19px}
+  .date{font-size:12px}
+  .weather{font-size:11px}
+  main{padding:35px 18px}
+  .intro h1{font-size:31px}
+  .card{grid-template-columns:1fr}
+  .image{min-height:230px;height:230px;font-size:75px}
+  .info{padding:28px}
+  .name{font-size:31px}
+  .controls{flex-direction:column}
+  select{width:100%}
+  .results{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -233,555 +184,297 @@ footer{
 <body>
 
 <header>
-
-  <div class="logo">1일 1한국사 인물</div>
-
+  <div class="logo">Daily History Fact</div>
   <div class="header-info">
     <div class="date" id="today"></div>
-    <div class="weather" id="weather">
-      날씨를 불러오는 중...
-    </div>
+    <div class="weather" id="weather">날씨를 불러오는 중...</div>
   </div>
-
 </header>
 
 <main>
 
-<section class="intro">
+  <section class="intro">
+    <h1>하루 한 번, 역사를 발견하다.</h1>
+    <p>오늘의 역사 인물 또는 유물을 만나보세요.</p>
+  </section>
 
-  <h1>오늘의 역사 인물</h1>
+  <section class="card" id="todayCard" role="link" tabindex="0"
+           aria-label="오늘의 콘텐츠 자세히 보기">
+    <div class="image" id="todayImage">歷</div>
+    <div class="info">
+      <div class="label" id="todayLabel">TODAY'S HISTORY</div>
+      <h2 class="name" id="todayName">불러오는 중...</h2>
+      <div class="period" id="todayPeriod"></div>
+      <p class="description" id="todayDescription"></p>
+      <button class="detail-button" id="detailButton" type="button">
+        자세히 알아보기 →
+      </button>
+    </div>
+  </section>
 
-  <p>
-    오늘 하루, 한 사람의 삶을 통해 역사를 만나보세요.
-  </p>
+  <section class="search-section">
+    <h2 class="search-title">역사를 검색하다</h2>
+    <p class="search-subtitle">
+      인물이나 유물의 이름을 검색하세요. 결과를 누르면 상세 페이지로 이동합니다.
+    </p>
 
-</section>
+    <div class="controls">
+      <input
+        id="search"
+        type="search"
+        placeholder="예: 세종대왕, 이순신, 금동대향로"
+        autocomplete="off"
+        aria-label="역사 인물 또는 유물 검색"
+      >
 
-
-<section class="card">
-
-  <div class="image" id="personIcon">
-    歷
-  </div>
-
-  <div class="info">
-
-    <div class="label">
-      TODAY'S HISTORICAL FIGURE
+      <select id="category" aria-label="검색 범위">
+        <option value="all">전체</option>
+        <option value="person">인물</option>
+        <option value="artifact">유물</option>
+      </select>
     </div>
 
-    <h2 class="name" id="personName">
-      불러오는 중...
-    </h2>
-
-    <div class="period" id="personPeriod"></div>
-
-    <p class="description" id="personDescription"></p>
-
-    <button onclick="showDetail()">
-      인물 자세히 보기
-    </button>
-
-  </div>
-
-</section>
-
-
-<div class="controls">
-
-  <input
-    id="search"
-    placeholder="인물 이름을 검색해보세요"
-  >
-
-  <select id="era">
-
-    <option value="all">
-      전체 시대
-    </option>
-
-    <option value="고대">
-      고대
-    </option>
-
-    <option value="고려">
-      고려
-    </option>
-
-    <option value="조선">
-      조선
-    </option>
-
-    <option value="근대">
-      근대
-    </option>
-
-    <option value="현대">
-      현대
-    </option>
-
-  </select>
-
-</div>
-
-
-<section class="grid" id="people"></section>
+    <section class="results" id="results" aria-live="polite"></section>
+  </section>
 
 </main>
 
-
-<footer>
-  Made by 16기 역덕 for 지현T
-</footer>
-
+<footer>Daily History Fact · Korean History</footer>
 
 <script>
-
 let people = [];
-let todayPerson = null;
+let artifacts = [];
+let todayItem = null;
 
-
-/* =========================
-   날짜
-========================= */
+const $ = id => document.getElementById(id);
 
 const today = new Date();
 
 const weekdays = [
-  "일요일",
-  "월요일",
-  "화요일",
-  "수요일",
-  "목요일",
-  "금요일",
-  "토요일"
+  "일요일","월요일","화요일","수요일","목요일","금요일","토요일"
 ];
 
-document.getElementById("today").textContent =
+$("today").textContent =
   today.getFullYear() + "년 " +
   (today.getMonth() + 1) + "월 " +
   today.getDate() + "일 " +
   weekdays[today.getDay()];
 
+function getAllItems(){
+  return [
+    ...people.map(person => ({...person, type:"person"})),
+    ...artifacts.map(artifact => ({...artifact, type:"artifact"}))
+  ];
+}
 
-/* =========================
-   오늘의 인물
-========================= */
+function getDailyItem(){
+  const items = getAllItems();
 
-function getTodayPerson(){
-
-  if(people.length === 0){
-    return null;
-  }
+  if(items.length === 0) return null;
 
   const dayOfYear = Math.floor(
-    (today - new Date(today.getFullYear(), 0, 0))
-    / 86400000
+    (today - new Date(today.getFullYear(),0,0)) / 86400000
   );
 
-  return people[dayOfYear % people.length];
-
+  return items[dayOfYear % items.length];
 }
 
+function openDetail(item){
+  if(!item) return;
 
-/* =========================
-   오늘의 인물 표시
-========================= */
+  const type = item.type === "artifact" ? "artifact" : "person";
+
+  location.href =
+    "detail.html?type=" + type +
+    "&id=" + encodeURIComponent(item.name);
+}
 
 function displayToday(){
+  todayItem = getDailyItem();
 
-  todayPerson = getTodayPerson();
+  if(!todayItem) return;
 
-  if(!todayPerson){
+  const isArtifact = todayItem.type === "artifact";
+
+  $("todayLabel").textContent = isArtifact
+    ? "TODAY'S HISTORICAL ARTIFACT"
+    : "TODAY'S HISTORICAL FIGURE";
+
+  $("todayName").textContent = todayItem.name;
+  $("todayPeriod").textContent =
+    [todayItem.era, todayItem.birth_death || todayItem.period]
+      .filter(Boolean).join(" · ");
+
+  $("todayDescription").textContent =
+    todayItem.description || "상세 페이지에서 더 알아보세요.";
+
+  $("todayImage").textContent =
+    todayItem.name ? todayItem.name.charAt(0) : "歷";
+
+  $("todayCard").onclick = () => openDetail(todayItem);
+
+  $("todayCard").onkeydown = event => {
+    if(event.key === "Enter" || event.key === " "){
+      event.preventDefault();
+      openDetail(todayItem);
+    }
+  };
+
+  $("detailButton").onclick = event => {
+    event.stopPropagation();
+    openDetail(todayItem);
+  };
+}
+
+function renderResults(){
+  const keyword = $("search").value.trim().toLocaleLowerCase();
+  const category = $("category").value;
+  const container = $("results");
+
+  // 검색어가 없으면 전체 목록을 표시하지 않음
+  if(!keyword){
+    container.replaceChildren();
     return;
   }
 
-  document.getElementById("personName").textContent =
-    todayPerson.name;
+  const items = getAllItems().filter(item => {
+    const matchesName =
+      (item.name || "").toLocaleLowerCase().includes(keyword);
 
-  document.getElementById("personPeriod").textContent =
-    todayPerson.era + " · " +
-    todayPerson.birth_death;
+    const matchesCategory =
+      category === "all" || item.type === category;
 
-  document.getElementById("personDescription").textContent =
-    todayPerson.description;
+    return matchesName && matchesCategory;
+  }).slice(0, 60);
 
-  /*
-    기존 데이터에는 icon 필드가 없으므로
-    인물 이름의 첫 글자를 표시
-  */
+  container.replaceChildren();
 
-  document.getElementById("personIcon").textContent =
-    todayPerson.name.charAt(0);
+  if(items.length === 0){
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "검색 결과가 없습니다. 다른 이름으로 검색해보세요.";
+    container.appendChild(empty);
+    return;
+  }
 
-}
+  items.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "result-card";
+    card.tabIndex = 0;
+    card.setAttribute("role","link");
 
+    const type = document.createElement("div");
+    type.className = "result-type";
+    type.textContent =
+      item.type === "artifact" ? "역사 유물 · ARTIFACT" : "역사 인물 · FIGURE";
 
-/* =========================
-   인물 목록
-========================= */
+    const name = document.createElement("h3");
+    name.textContent = item.name;
 
-function renderPeople(){
+    const period = document.createElement("div");
+    period.className = "result-period";
+    period.textContent =
+      [item.era, item.birth_death || item.period]
+        .filter(Boolean).join(" · ");
 
-  const search =
-    document.getElementById("search")
-    .value
-    .toLowerCase()
-    .trim();
+    const description = document.createElement("p");
+    description.className = "result-description";
+    description.textContent = item.description || "자세한 설명을 확인하세요.";
 
-  const era =
-    document.getElementById("era").value;
+    card.append(type, name, period, description);
+    card.onclick = () => openDetail(item);
+    card.onkeydown = event => {
+      if(event.key === "Enter" || event.key === " "){
+        event.preventDefault();
+        openDetail(item);
+      }
+    };
 
-
-  const filtered = people.filter(person => {
-
-    const matchName =
-      person.name
-      .toLowerCase()
-      .includes(search);
-
-    const matchEra =
-      era === "all" ||
-      person.era === era;
-
-    return matchName && matchEra;
-
+    container.appendChild(card);
   });
 
-
-  const container =
-    document.getElementById("people");
-
-
-  container.innerHTML =
-    filtered.map(person => `
-
-      <div
-        class="person"
-        onclick="selectPerson(${JSON.stringify(person.name)})"
-      >
-
-        <h3>
-          ${person.name}
-        </h3>
-
-        <p>
-          ${person.era} · ${person.birth_death}
-        </p>
-
-      </div>
-
-    `).join("");
-
-
-  if(filtered.length === 0){
-
-    container.innerHTML = `
-      <p style="
-        grid-column:1/-1;
-        text-align:center;
-        padding:40px;
-        color:#82776c;
-      ">
-        검색 결과가 없습니다.
-      </p>
-    `;
-
+  if(items.length === 60){
+    const note = document.createElement("p");
+    note.className = "empty";
+    note.textContent = "검색 결과가 많아 최대 60개까지 표시했습니다. 이름을 더 구체적으로 검색해보세요.";
+    container.appendChild(note);
   }
-
 }
 
-
-/* =========================
-   인물 선택
-========================= */
-
-function selectPerson(name){
-
-  const person =
-    people.find(p => p.name === name);
-
-  if(!person){
-    return;
-  }
-
-  document.getElementById("personName").textContent =
-    person.name;
-
-  document.getElementById("personPeriod").textContent =
-    person.era + " · " +
-    person.birth_death;
-
-  document.getElementById("personDescription").textContent =
-    person.description;
-
-  document.getElementById("personIcon").textContent =
-    person.name.charAt(0);
-
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-}
-
-
-/* =========================
-   자세히 보기
-========================= */
-
-function showDetail(){
-
-  if(!todayPerson){
-    return;
-  }
-
-
-  const activities =
-    todayPerson.major_activities || [];
-
-
-  let message =
-    todayPerson.name +
-    "\n\n" +
-    todayPerson.description;
-
-
-  if(activities.length > 0){
-
-    message +=
-      "\n\n주요 활동\n\n" +
-      activities.join("\n");
-
-  }
-
-
-  if(todayPerson.source_url){
-
-    message +=
-      "\n\n출처\n" +
-      todayPerson.source_url;
-
-  }
-
-
-  alert(message);
-
-}
-
-
-/* =========================
-   검색 / 필터
-========================= */
-
-document
-  .getElementById("search")
-  .addEventListener(
-    "input",
-    renderPeople
-  );
-
-
-document
-  .getElementById("era")
-  .addEventListener(
-    "change",
-    renderPeople
-  );
-
-
-/* =========================
-   날씨
-========================= */
+$("search").addEventListener("input", renderResults);
+$("category").addEventListener("change", renderResults);
 
 async function getWeather(){
-
-  const weatherElement =
-    document.getElementById("weather");
-
-
   try{
-
     const response = await fetch(
       "https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul"
     );
 
+    if(!response.ok) throw new Error("날씨 요청 실패");
 
-    if(!response.ok){
-      throw new Error(
-        "Weather request failed"
-      );
-    }
+    const data = await response.json();
+    const temperature = Math.round(data.current.temperature_2m);
+    const max = Math.round(data.daily.temperature_2m_max[0]);
+    const min = Math.round(data.daily.temperature_2m_min[0]);
+    const code = data.current.weather_code;
 
+    let text = "맑음";
 
-    const data =
-      await response.json();
+    if(code === 1) text = "대체로 맑음";
+    else if(code === 2 || code === 3) text = "구름";
+    else if(code >= 45 && code <= 48) text = "안개";
+    else if(code >= 51 && code <= 67) text = "비";
+    else if(code >= 71 && code <= 77) text = "눈";
+    else if(code >= 80 && code <= 82) text = "소나기";
+    else if(code >= 95) text = "뇌우";
 
-
-    const temperature =
-      Math.round(
-        data.current.temperature_2m
-      );
-
-
-    const max =
-      Math.round(
-        data.daily.temperature_2m_max[0]
-      );
-
-
-    const min =
-      Math.round(
-        data.daily.temperature_2m_min[0]
-      );
-
-
-    const code =
-      data.current.weather_code;
-
-
-    let weatherText = "맑음";
-
-
-    if(code >= 1 && code <= 3){
-      weatherText = "구름";
-    }
-
-    else if(code >= 45 && code <= 48){
-      weatherText = "안개";
-    }
-
-    else if(code >= 51 && code <= 67){
-      weatherText = "비";
-    }
-
-    else if(code >= 71 && code <= 77){
-      weatherText = "눈";
-    }
-
-    else if(code >= 80 && code <= 82){
-      weatherText = "소나기";
-    }
-
-    else if(code >= 95){
-      weatherText = "뇌우";
-    }
-
-
-    weatherElement.textContent =
-      "서울 · " +
-      weatherText +
-      " · 현재 " +
-      temperature +
-      "°C · 최고 " +
-      max +
-      "°C / 최저 " +
-      min +
-      "°C";
-
+    $("weather").textContent =
+      "서울 · " + text + " · 현재 " + temperature +
+      "°C · 최고 " + max + "°C / 최저 " + min + "°C";
 
   }catch(error){
-
-    console.error(
-      "날씨 불러오기 실패:",
-      error
-    );
-
-
-    weatherElement.textContent =
-      "서울 · 날씨 정보를 불러올 수 없습니다.";
-
+    console.error("날씨 불러오기 실패:", error);
+    $("weather").textContent = "서울 · 날씨 정보를 불러올 수 없습니다.";
   }
-
 }
 
-
-/* =========================
-   people.json 불러오기
-========================= */
-
-async function loadPeople(){
-
+async function loadData(){
   try{
+    const [peopleResponse, artifactsResponse] = await Promise.all([
+      fetch("./people.json"),
+      fetch("./artifacts.json")
+    ]);
 
-    const response =
-      await fetch("./people.json");
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "people.json HTTP " +
-        response.status
-      );
-
+    if(!peopleResponse.ok){
+      throw new Error("people.json을 불러오지 못했습니다.");
     }
 
-
-    const data =
-      await response.json();
-
-
-    if(!Array.isArray(data)){
-
-      throw new Error(
-        "people.json의 형식이 올바르지 않습니다."
-      );
-
-    }
-
-
-    people = data.filter(person =>
-      person &&
-      person.name &&
-      person.era
+    people = (await peopleResponse.json()).filter(
+      item => item && item.name && item.era
     );
 
-
-    if(people.length === 0){
-
-      throw new Error(
-        "사용할 수 있는 인물 데이터가 없습니다."
-      );
-
+    if(artifactsResponse.ok){
+      const data = await artifactsResponse.json();
+      artifacts = Array.isArray(data)
+        ? data.filter(item => item && item.name)
+        : [];
+    }else{
+      artifacts = [];
+      console.warn("artifacts.json이 없습니다. 유물 없이 인물만 표시합니다.");
     }
-
 
     displayToday();
-    renderPeople();
-
 
   }catch(error){
-
-    console.error(
-      "people.json 불러오기 실패:",
-      error
-    );
-
-
-    document.getElementById(
-      "personName"
-    ).textContent =
-      "인물 데이터를 불러올 수 없습니다.";
-
-    document.getElementById(
-      "personDescription"
-    ).textContent =
+    console.error(error);
+    $("todayName").textContent = "데이터를 불러오지 못했습니다.";
+    $("todayDescription").textContent =
       "people.json 파일이 index.html과 같은 폴더에 있는지 확인해주세요.";
-
   }
-
 }
 
-
-/* =========================
-   실행
-========================= */
-
-loadPeople();
+loadData();
 getWeather();
-
 </script>
 
 </body>
