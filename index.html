@@ -7,315 +7,189 @@
 <title>역사관의 문을 두드리다</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --paper: #f5f0e7;
-  --ink: #332d28;
-  --gold: #c4a45e;
-}
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
+:root{--paper:#f5f0e7;--ink:#332d28;--gold:#c5a45e;--green:#194535}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{background:var(--paper);color:var(--ink);font-family:"Noto Serif KR",serif}
+button,input,select{font:inherit}
+.screen{display:none;width:100%;height:100dvh;overflow:hidden}
+.screen.active{display:flex;flex-direction:column}
 
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+/* 한옥 지붕과 단청 */
+.roof{
+ height:clamp(40px,7vh,68px);flex-shrink:0;position:relative;
+ background:
+ repeating-linear-gradient(90deg,transparent 0 17px,#e3c879 17px 21px,transparent 21px 38px),
+ repeating-linear-gradient(45deg,transparent 0 19px,#d7b66a 19px 23px,#9c4934 23px 27px,transparent 27px 39px),
+ repeating-linear-gradient(-45deg,#173c30 0 22px,#d7b66a 22px 26px,#173c30 26px 42px);
+ border-bottom:9px solid #70402c;
+ box-shadow:0 4px 0 #d8cbb9;
 }
-
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: "Noto Serif KR", serif;
-}
-
-.page {
-  width: 100%;
-  height: 100dvh;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.roof:before{
+ content:"";position:absolute;left:0;right:0;top:0;height:7px;
+ background:repeating-linear-gradient(90deg,#b64f39 0 12px,#e4c778 12px 18px,#204b39 18px 30px);
 }
 
-header {
-  flex: 0 0 auto;
-  text-align: center;
-  padding: clamp(8px, 2vh, 22px) 10px 12px;
+/* 공통 제목 */
+.heading{text-align:center;padding:10px 8px 12px;flex-shrink:0}
+.eyebrow{font:10px Georgia,serif;letter-spacing:4px;color:#9b8469}
+h1{font-size:clamp(23px,3vw,36px);font-weight:500;margin:5px 0}
+.subtitle{font-size:12px;color:#8d7d6d}
+
+/* 입장 화면 */
+#entry .gate-wrap{flex:1;min-height:0;padding:12px 14px 0}
+.gate{
+ position:relative;width:100%;height:100%;overflow:hidden;
+ perspective:1400px;background:#d4c18b;
+ border:7px solid #70402c;outline:2px solid var(--gold);
+ box-shadow:inset 0 0 0 4px #e7ce88;
 }
-.eyebrow {
-  color: #9b8469;
-  font-size: 10px;
-  letter-spacing: 4px;
+/* 문 안쪽 */
+.inside{
+ position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+ color:#f9e9bd;
+ background:radial-gradient(ellipse,#cbb37a 0,#59734d 48%,#173c30 100%);
 }
-h1 {
-  font-size: clamp(23px, 3.2vw, 38px);
-  font-weight: 500;
-  margin: 7px 0;
+.inside .hanja{font-size:clamp(36px,5vw,58px)}
+.inside p{font-size:12px}
+
+/* 한옥 문짝: 나무틀과 격자 */
+.door{
+ position:absolute;z-index:3;top:0;width:50%;height:100%;
+ background:
+   repeating-linear-gradient(90deg,transparent 0 9%,rgba(15,62,44,.95) 9% 11%,transparent 11% 20%),
+   repeating-linear-gradient(0deg,transparent 0 8%,rgba(15,62,44,.95) 8% 10%,transparent 10% 20%),
+   repeating-linear-gradient(45deg,transparent 0 13px,rgba(205,174,95,.85) 13px 16px,transparent 16px 29px),
+   repeating-linear-gradient(-45deg,transparent 0 13px,rgba(205,174,95,.85) 13px 16px,transparent 16px 29px),
+   linear-gradient(90deg,#6b3828,#9d5337 8%,#1e6849 12%,#286d4d 88%,#8c4930 94%,#613423);
+ box-shadow:inset 0 0 0 9px #9b6139,inset 0 0 0 14px #d7b96c;
+ transition:transform 1.5s cubic-bezier(.2,.7,.2,1);
+ transform-style:preserve-3d;
 }
-.subtitle {
-  color: #8d7d6d;
-  font-size: clamp(11px, 1.2vw, 14px);
+.door:before{
+ content:"";position:absolute;inset:5% 9%;
+ border:8px solid #d7b96c;
+ box-shadow:inset 0 0 0 5px #174a35,inset 0 0 0 9px #b88b45;
+ background:
+  repeating-linear-gradient(90deg,transparent 0 17px,#d4b56b 17px 21px,transparent 21px 38px),
+  repeating-linear-gradient(45deg,transparent 0 17px,#1a5039 17px 22px,transparent 22px 34px),
+  repeating-linear-gradient(-45deg,#2d7550 0 17px,#d5b96f 17px 21px,#2d7550 21px 34px);
+}
+.door:after{
+ content:"";position:absolute;left:8%;right:8%;bottom:7%;height:15%;
+ border:8px ridge #c69e4f;background:linear-gradient(#25573d,#173c30);
+ box-shadow:inset 0 5px #49734b;
+}
+.door.left{left:0;transform-origin:left center;border-right:3px solid #e0c579}
+.door.right{right:0;transform-origin:right center;border-left:3px solid #e0c579}
+.gate.open .door.left{transform:rotateY(-112deg)}
+.gate.open .door.right{transform:rotateY(112deg)}
+
+/* 실제 문고리 버튼 */
+.handle{
+ position:absolute;z-index:5;top:46%;left:50%;
+ transform:translate(-50%,-50%);
+ width:48px;height:48px;border-radius:50%;
+ border:4px double #f6dc8d;background:radial-gradient(circle at 35% 30%,#fff0b1,#c69b47 65%,#795229);
+ box-shadow:0 0 0 3px #70402c,inset 0 0 0 4px #f7e6a5;
+ cursor:pointer;
+}
+.handle:after{content:"";position:absolute;inset:12px;border:3px solid #805a2d;border-radius:50%}
+.gate.open .handle{opacity:0;pointer-events:none}
+
+/* 인물 중앙 카드와 금색 장식 */
+.reveal{
+ position:absolute;z-index:4;inset:5% 6%;display:grid;place-items:center;
+ opacity:0;transform:scale(.8);transition:opacity .8s,transform .8s;
+ pointer-events:none;
+}
+.reveal.show{opacity:1;transform:scale(1)}
+.ornament{position:absolute;inset:0;border:2px solid #c5a45e;outline:1px solid #e7d39c;outline-offset:-8px}
+.ornament:before,.ornament:after{content:"❦";position:absolute;top:5px;color:#b3914d;font-size:21px}
+.ornament:before{left:8px}.ornament:after{right:8px}
+.corner{position:absolute;width:20px;height:20px;border:2px solid #b3914d;border-radius:50%}
+.tl{top:4px;left:4px}.tr{top:4px;right:4px}.bl{bottom:4px;left:4px}.br{bottom:4px;right:4px}
+.person{
+ position:relative;width:76%;max-height:78%;overflow:auto;text-align:center;
+ padding:14px 12px;background:rgba(255,250,235,.95);
+}
+.person .label{font-size:9px;letter-spacing:2px;color:#947744}
+#personName{font-size:clamp(21px,3vw,34px);font-weight:500;margin:7px 0}
+#personPeriod{font-size:11px;color:#7b6b56}
+#personDescription{font-size:clamp(11px,1.2vw,14px);line-height:1.7;white-space:pre-line;margin:9px 0 0}
+.entry-bottom{text-align:center;flex-shrink:0;padding:7px;font-size:11px;color:#917b6f}
+.home-btn,.back-btn{
+ border:1px solid var(--gold);background:#294b39;color:#fff8e9;
+ padding:6px 14px;cursor:pointer;font-size:12px;
 }
 
-/* 단청 */
-.roof {
-  flex: 0 0 auto;
-  width: 100%;
-  height: clamp(35px, 7vh, 68px);
-  background:
-    repeating-linear-gradient(90deg, transparent 0 17px, #d7b66a 17px 21px, transparent 21px 38px),
-    repeating-linear-gradient(45deg, transparent 0 19px, #d7b66a 19px 23px, #9d4131 23px 27px, transparent 27px 39px),
-    repeating-linear-gradient(-45deg, #193e32 0 22px, #d7b66a 22px 26px, #193e32 26px 42px);
-  border-bottom: 8px solid #70402c;
-  box-shadow: 0 3px 0 #d9cdbd;
+/* 기존 인물 홈페이지 */
+#homePage{overflow:hidden}
+.home-top{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;gap:12px;flex-shrink:0}
+.brand{font-size:clamp(18px,2.5vw,27px)}
+.brand small{display:block;font:10px Georgia,serif;letter-spacing:3px;color:#9b8469;margin-top:3px}
+.home-controls{display:flex;gap:8px;flex-wrap:wrap}
+input,select{border:1px solid #c9b99d;background:#fffaf1;color:#43382b;padding:9px 10px;min-width:0}
+#search{width:min(35vw,300px)}
+.home-main{flex:1;min-height:0;overflow:auto;padding:8px 20px 18px}
+.section-title{font-size:17px;font-weight:500;margin:4px 0 12px}
+.today-card{display:flex;align-items:center;gap:18px;background:#e9dfcd;border:1px solid #d5c5a7;padding:14px 18px;margin-bottom:18px}
+.today-mark{width:70px;height:70px;flex-shrink:0;display:grid;place-items:center;background:#315441;color:#f6e6b4;font-size:29px;border:3px double #c5a45e}
+.today-card h2{margin:0 0 5px;font-size:22px;font-weight:500}
+.today-card p{margin:0;font-size:12px;line-height:1.7;color:#665849}
+.people-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.person-card{border:1px solid #d8c9ad;background:#fbf7ef;padding:13px;cursor:pointer;min-width:0;transition:background .2s}
+.person-card:hover{background:#eee2cb}
+.person-card h3{font-size:15px;font-weight:500;margin:0 0 5px}
+.person-card .era{font-size:10px;color:#967e5c;margin-bottom:7px}
+.person-card p{font-size:11px;line-height:1.6;color:#65594b;margin:0}
+.no-results{font-size:13px;color:#8b7760;padding:20px 0}
+.home-footer{flex-shrink:0;text-align:center;padding:8px;font-size:10px;color:#9b8b7b;border-top:1px solid #e1d6c5}
+@media(max-width:700px){
+ .home-top{align-items:flex-start;flex-direction:column;padding:9px 12px}
+ .home-controls{width:100%}
+ #search{flex:1;width:auto}
+ .home-main{padding:8px 12px 14px}
+ .people-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .today-card{padding:10px;gap:10px}
+ .today-mark{width:54px;height:54px}
+ .today-card h2{font-size:18px}
+ #entry .gate-wrap{padding:8px 8px 0}
+ .gate{border-width:5px}
+ .person{width:78%;padding:9px 7px}
 }
-
-/* 문 영역 */
-.gate-area {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-  padding: clamp(8px, 1.6vh, 16px) clamp(8px, 1.5vw, 18px) 0;
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-}
-
-.gate-frame {
-  position: relative;
-  width: min(100%, 1100px);
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
-  perspective: 1200px;
-  background: radial-gradient(ellipse, #d9c38c, #385744 65%, #19362c);
-  border: 6px solid #70402c;
-  outline: 2px solid var(--gold);
-  box-shadow: inset 0 0 0 4px #e6cc85;
-}
-
-.inside {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  color: #fff0c9;
-}
-.inside h2 {
-  margin: 0;
-  font-size: clamp(30px, 5vw, 55px);
-  font-weight: 400;
-  letter-spacing: 8px;
-}
-.inside p { font-size: 12px; }
-
-.door {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background-image: url("./palace-door.png");
-  background-repeat: no-repeat;
-  background-size: 200% 100%;
-  transition: transform 1.4s cubic-bezier(.2,.7,.2,1);
-  transform-style: preserve-3d;
-}
-.door.left {
-  left: 0;
-  background-position: left center;
-  transform-origin: left center;
-  border-right: 2px solid #d5b66c;
-}
-.door.right {
-  right: 0;
-  background-position: right center;
-  transform-origin: right center;
-  border-left: 2px solid #d5b66c;
-}
-.gate-frame.open .door.left { transform: rotateY(-110deg); }
-.gate-frame.open .door.right { transform: rotateY(110deg); }
-
-/* 문고리 */
-.handle {
-  position: absolute;
-  z-index: 5;
-  top: 44%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 53px;
-  height: 53px;
-  border-radius: 50%;
-  border: 3px solid #f2d68a;
-  background: radial-gradient(circle at 35% 30%, #fff1b4, #c69a43 65%, #795229);
-  box-shadow: 0 0 0 2px #795229, inset 0 0 0 4px #f8e4a2;
-  cursor: pointer;
-}
-.handle::after {
-  content: "";
-  position: absolute;
-  inset: 13px;
-  border: 2px solid #795229;
-  border-radius: 50%;
-}
-.gate-frame.open .handle {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* 중앙 인물 카드 */
-.person-reveal {
-  position: absolute;
-  z-index: 4;
-  inset: 4% 6%;
-  display: grid;
-  place-items: center;
-  opacity: 0;
-  transform: scale(.75);
-  pointer-events: none;
-  transition: opacity .9s ease, transform .9s ease;
-}
-.person-reveal.show {
-  opacity: 1;
-  transform: scale(1);
-}
-.gold-frame {
-  position: absolute;
-  inset: 0;
-  border: 2px solid #c4a45e;
-  outline: 1px solid #e5cf91;
-  outline-offset: -8px;
-  pointer-events: none;
-}
-.gold-frame::before,
-.gold-frame::after {
-  content: "✦";
-  position: absolute;
-  color: #b3914d;
-  font-size: 22px;
-  top: 8px;
-}
-.gold-frame::before { left: 10px; }
-.gold-frame::after { right: 10px; }
-
-.corner {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border: 2px solid #b3914d;
-  border-radius: 50%;
-}
-.corner.tl { top: 5px; left: 5px; }
-.corner.tr { top: 5px; right: 5px; }
-.corner.bl { bottom: 5px; left: 5px; }
-.corner.br { bottom: 5px; right: 5px; }
-
-.person-content {
-  position: relative;
-  z-index: 1;
-  width: 76%;
-  max-height: 76%;
-  overflow: auto;
-  text-align: center;
-  padding: 15px 12px;
-  color: #403321;
-  background: rgba(255, 250, 235, .94);
-}
-.person-label {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: #947744;
-}
-#personName {
-  margin: 8px 0;
-  font-size: clamp(20px, 3vw, 34px);
-  font-weight: 500;
-}
-#personPeriod {
-  font-size: 11px;
-  color: #7b6b56;
-}
-#personDescription {
-  margin: 10px auto 0;
-  font-size: clamp(11px, 1.3vw, 14px);
-  line-height: 1.7;
-  white-space: pre-line;
-}
-
-.instruction {
-  flex: 0 0 auto;
-  text-align: center;
-  padding: 8px 8px 4px;
-  font-size: 12px;
-  line-height: 1.6;
-}
-#count { color: #917b6f; font-size: 10px; }
-
-.footer {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 5px 10px max(7px, env(safe-area-inset-bottom));
-  font-size: 10px;
-  color: #9b8b7b;
-}
-.home-button {
-  font-family: inherit;
-  font-size: 11px;
-  padding: 5px 12px;
-  background: #354b3d;
-  color: #f5f0e7;
-  border: 1px solid var(--gold);
-  cursor: pointer;
-}
-.home-button:hover { background: #526a56; }
-
-@media (max-height: 600px) {
-  header { padding: 5px 8px; }
-  h1 { font-size: 22px; margin: 4px 0; }
-  .roof { height: 30px; }
-  .instruction { padding: 4px; }
-  .gate-area { padding-top: 7px; }
-  .handle { width: 43px; height: 43px; }
-  .handle::after { inset: 10px; }
+@media(max-height:600px){
+ .heading{padding:4px}
+ .heading h1{font-size:21px;margin:3px}
+ .roof{height:28px}
+ #entry .gate-wrap{padding-top:7px}
+ .entry-bottom{padding:3px}
 }
 </style>
 </head>
-
 <body>
-<div class="page">
-  <header>
+
+<!-- 첫 화면: 한옥 문 -->
+<section id="entry" class="screen active">
+  <div class="heading">
     <div class="eyebrow">DAILY HISTORY FACT</div>
     <h1>역사관의 문을 두드리다</h1>
     <div class="subtitle">문 너머에서 오늘의 역사를 만나보세요.</div>
-  </header>
-
+  </div>
   <div class="roof"></div>
-
-  <main class="gate-area">
-    <div class="gate-frame" id="gateFrame">
-      <div class="inside">
-        <div>
-          <h2>史</h2>
-          <p>오늘의 역사 인물을 만나보세요.</p>
-        </div>
-      </div>
-
+  <main class="gate-wrap">
+    <div class="gate" id="gate">
+      <div class="inside"><div><div class="hanja">史</div><p>오늘의 역사를 만나보세요.</p></div></div>
       <div class="door left"></div>
       <div class="door right"></div>
       <button class="handle" id="handle" aria-label="문고리 클릭"></button>
-
-      <section class="person-reveal" id="personReveal" aria-live="polite">
-        <div class="gold-frame">
-          <i class="corner tl"></i>
-          <i class="corner tr"></i>
-          <i class="corner bl"></i>
-          <i class="corner br"></i>
+      <section class="reveal" id="reveal">
+        <div class="ornament">
+          <i class="corner tl"></i><i class="corner tr"></i>
+          <i class="corner bl"></i><i class="corner br"></i>
         </div>
-        <div class="person-content">
-          <div class="person-label">TODAY'S HISTORICAL FIGURE</div>
+        <div class="person">
+          <div class="label">TODAY'S HISTORICAL FIGURE</div>
           <h2 id="personName">오늘의 인물</h2>
           <div id="personPeriod"></div>
           <p id="personDescription"></p>
@@ -323,128 +197,187 @@ h1 {
       </section>
     </div>
   </main>
-
-  <div class="instruction">
-    <div id="instructionText">문고리를 세 번 클릭해 보세요.</div>
+  <div class="entry-bottom">
+    <div id="message">문고리를 세 번 클릭해 보세요.</div>
     <div id="count">두드린 횟수: 0 / 3</div>
   </div>
+</section>
 
-  <footer class="footer">
-    <span>Made by 16기 역덕 for 지현T</span>
-    <button class="home-button" id="homeButton">홈페이지로 가기</button>
-  </footer>
-</div>
+<!-- 기존 홈페이지: 오늘의 인물 + 검색 + 인물 목록 -->
+<section id="homePage" class="screen">
+  <div class="roof"></div>
+  <div class="home-top">
+    <div class="brand">한국사 인물관<small>DAILY HISTORY FACT</small></div>
+    <div class="home-controls">
+      <input id="search" type="search" placeholder="인물 이름이나 설명 검색">
+      <select id="eraFilter">
+        <option value="">모든 시대</option>
+      </select>
+      <button class="back-btn" id="doorAgain">문으로 돌아가기</button>
+    </div>
+  </div>
+  <main class="home-main">
+    <div class="section-title">오늘의 인물</div>
+    <article class="today-card">
+      <div class="today-mark">史</div>
+      <div>
+        <h2 id="todayName">인물 정보를 불러오는 중</h2>
+        <p id="todayPeriod"></p>
+        <p id="todayDescription"></p>
+      </div>
+    </article>
+    <div class="section-title">역사 인물 찾아보기</div>
+    <div id="peopleGrid" class="people-grid"></div>
+    <div id="noResults" class="no-results" hidden>검색 결과가 없습니다.</div>
+  </main>
+  <footer class="home-footer">Made by 16기 역덕 for 지현T</footer>
+</section>
 
 <script>
-const gateFrame = document.getElementById("gateFrame");
-const handle = document.getElementById("handle");
-const instructionText = document.getElementById("instructionText");
-const count = document.getElementById("count");
-const personReveal = document.getElementById("personReveal");
-const homeButton = document.getElementById("homeButton");
+const $=id=>document.getElementById(id);
+let people=[];
+let knocks=0;
+let busy=false;
+let todayPerson=null;
 
-let knocks = 0;
-let busy = false;
+function getDescription(p){
+  const acts=Array.isArray(p.major_activities)?p.major_activities.join(" · "):p.major_activities;
+  return p.description||p.contribution||acts||"설명을 준비하고 있습니다.";
+}
+function getPeriod(p){
+  return [p.era,p.birth_death].filter(Boolean).join(" · ");
+}
 
-handle.addEventListener("click", async () => {
-  if (busy) return;
-  knocks++;
+async function loadPeople(){
+  try{
+    const response=await fetch("./people.json");
+    if(!response.ok)throw new Error("people.json 로딩 실패");
+    const data=await response.json();
+    people=Array.isArray(data)?data:(data.people||[]);
+    if(!people.length)throw new Error("인물 데이터가 비어 있습니다.");
 
-  count.textContent = `두드린 횟수: ${knocks} / 3`;
+    const todayKey=new Date().toLocaleDateString("sv-SE");
+    let savedName=null;
+    try{
+      if(localStorage.getItem("historyDate")===todayKey){
+        savedName=localStorage.getItem("todayPerson");
+      }
+    }catch(e){}
 
-  gateFrame.animate([
-    { transform: "translateX(0)" },
-    { transform: "translateX(-4px)" },
-    { transform: "translateX(4px)" },
-    { transform: "translateX(0)" }
-  ], { duration: 180 });
-
-  if (knocks < 3) {
-    instructionText.textContent =
-      knocks === 1 ? "똑, 문 안에서 기척이 느껴집니다." :
-      "똑, 마지막으로 한 번 더 두드려 보세요.";
-    return;
-  }
-
-  busy = true;
-  handle.disabled = true;
-  instructionText.textContent = "역사의 문이 열립니다.";
-
-  await new Promise(resolve => setTimeout(resolve, 450));
-  gateFrame.classList.add("open");
-
-  await new Promise(resolve => setTimeout(resolve, 1400));
-  await revealPerson();
-});
-
-async function revealPerson() {
-  try {
-    const response = await fetch("./people.json");
-    if (!response.ok) throw new Error("people.json을 읽을 수 없습니다.");
-
-    const data = await response.json();
-    const people = Array.isArray(data) ? data : data.people;
-    if (!Array.isArray(people) || people.length === 0) {
-      throw new Error("인물 데이터가 없습니다.");
+    todayPerson=people.find(p=>p.name===savedName);
+    if(!todayPerson){
+      const previous=localStorage.getItem("todayPerson");
+      const pool=people.filter(p=>p.name!==previous);
+      const options=pool.length?pool:people;
+      todayPerson=options[Math.floor(Math.random()*options.length)];
+      try{
+        localStorage.setItem("historyDate",todayKey);
+        localStorage.setItem("todayPerson",todayPerson.name);
+      }catch(e){}
     }
 
-    const now = new Date();
-    const dateKey = [
-      now.getFullYear(),
-      String(now.getMonth() + 1).padStart(2, "0"),
-      String(now.getDate()).padStart(2, "0")
-    ].join("-");
+    $("personName").textContent=todayPerson.name||"오늘의 인물";
+    $("personPeriod").textContent=getPeriod(todayPerson);
+    $("personDescription").textContent=getDescription(todayPerson);
+    $("todayName").textContent=todayPerson.name||"오늘의 인물";
+    $("todayPeriod").textContent=getPeriod(todayPerson);
+    $("todayDescription").textContent=getDescription(todayPerson);
 
-    let person;
-
-    try {
-      if (localStorage.getItem("historyDate") === dateKey) {
-        person = people.find(p => p.name === localStorage.getItem("todayPerson"));
-      }
-
-      if (!person) {
-        const previousName = localStorage.getItem("todayPerson");
-        const choices = people.filter(p => p.name !== previousName);
-        const pool = choices.length ? choices : people;
-        person = pool[Math.floor(Math.random() * pool.length)];
-
-        localStorage.setItem("historyDate", dateKey);
-        localStorage.setItem("todayPerson", person.name);
-      }
-    } catch {
-      person = people[Math.floor(Math.random() * people.length)];
-    }
-
-    document.getElementById("personName").textContent =
-      person.name || "이름 정보 없음";
-    document.getElementById("personPeriod").textContent =
-      [person.era, person.birth_death].filter(Boolean).join(" · ");
-
-    const activities = Array.isArray(person.major_activities)
-      ? person.major_activities.join("\n")
-      : person.major_activities;
-
-    document.getElementById("personDescription").textContent =
-      person.description || person.contribution || activities ||
-      "인물 설명을 준비하고 있습니다.";
-
-    personReveal.classList.add("show");
-    instructionText.textContent = "오늘의 역사 인물을 만나보세요.";
-  } catch (error) {
+    buildEraFilter();
+    renderPeople();
+  }catch(error){
     console.error(error);
-    instructionText.textContent = "인물 정보를 불러오지 못했습니다. people.json을 확인해 주세요.";
+    $("message").textContent="인물 데이터를 불러오지 못했습니다. people.json을 확인해 주세요.";
+    $("todayName").textContent="인물 데이터를 불러오지 못했습니다.";
   }
 }
 
-homeButton.addEventListener("click", () => {
-  knocks = 0;
-  busy = false;
-  gateFrame.classList.remove("open");
-  personReveal.classList.remove("show");
-  handle.disabled = false;
-  count.textContent = "두드린 횟수: 0 / 3";
-  instructionText.textContent = "문고리를 세 번 클릭해 보세요.";
+function buildEraFilter(){
+  const eras=[...new Set(people.map(p=>p.era).filter(Boolean))].sort();
+  $("eraFilter").innerHTML='<option value="">모든 시대</option>';
+  eras.forEach(era=>{
+    const option=document.createElement("option");
+    option.value=era;
+    option.textContent=era;
+    $("eraFilter").appendChild(option);
+  });
+}
+
+function renderPeople(){
+  const query=$("search").value.trim().toLowerCase();
+  const era=$("eraFilter").value;
+  const filtered=people.filter(p=>{
+    const text=[p.name,p.era,p.description,p.contribution,p.birth_death,
+      Array.isArray(p.major_activities)?p.major_activities.join(" "):p.major_activities
+    ].filter(Boolean).join(" ").toLowerCase();
+    return text.includes(query)&&(!era||p.era===era);
+  });
+
+  $("peopleGrid").innerHTML="";
+  $("noResults").hidden=filtered.length>0;
+
+  filtered.forEach(p=>{
+    const card=document.createElement("article");
+    card.className="person-card";
+    const title=document.createElement("h3");
+    title.textContent=p.name||"이름 미상";
+    const period=document.createElement("div");
+    period.className="era";
+    period.textContent=getPeriod(p)||"시대 정보 없음";
+    const desc=document.createElement("p");
+    const full=getDescription(p);
+    desc.textContent=full.length>90?full.slice(0,90)+"…":full;
+    card.append(title,period,desc);
+    card.addEventListener("click",()=>{
+      $("todayName").textContent=p.name||"인물";
+      $("todayPeriod").textContent=getPeriod(p);
+      $("todayDescription").textContent=getDescription(p);
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
+    $("peopleGrid").appendChild(card);
+  });
+}
+
+$("handle").addEventListener("click",async()=>{
+  if(busy)return;
+  knocks++;
+  $("count").textContent=`두드린 횟수: ${knocks} / 3`;
+  $("gate").animate([
+    {transform:"translateX(0)"},{transform:"translateX(-3px)"},
+    {transform:"translateX(3px)"},{transform:"translateX(0)"}
+  ],{duration:170});
+  if(knocks<3){
+    $("message").textContent=knocks===1?"똑, 안에서 기척이 느껴집니다.":"똑, 마지막으로 한 번 더!";
+    return;
+  }
+  busy=true;
+  $("handle").disabled=true;
+  $("message").textContent="역사의 문이 열립니다.";
+  await new Promise(r=>setTimeout(r,350));
+  $("gate").classList.add("open");
+  await new Promise(r=>setTimeout(r,1450));
+  $("reveal").classList.add("show");
+  $("message").textContent="오늘의 인물을 만났습니다.";
+  await new Promise(r=>setTimeout(r,1000));
+  $("entry").classList.remove("active");
+  $("homePage").classList.add("active");
 });
+
+$("search").addEventListener("input",renderPeople);
+$("eraFilter").addEventListener("change",renderPeople);
+
+$("doorAgain").addEventListener("click",()=>{
+  $("homePage").classList.remove("active");
+  $("entry").classList.add("active");
+  $("gate").classList.remove("open");
+  $("reveal").classList.remove("show");
+  knocks=0;busy=false;
+  $("handle").disabled=false;
+  $("count").textContent="두드린 횟수: 0 / 3";
+  $("message").textContent="문고리를 세 번 클릭해 보세요.";
+});
+
+loadPeople();
 </script>
 </body>
 </html>
