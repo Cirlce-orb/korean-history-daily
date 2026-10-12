@@ -7,14 +7,12 @@
 <title>역사관의 문을 두드리다</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
 
 :root {
   --ivory: #f5f0e7;
   --ink: #332d28;
   --brown: #6f3827;
-  --red: #9e3f2c;
-  --green: #173d35;
   --gold: #c69a48;
 }
 
@@ -24,15 +22,11 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
   background: var(--ivory);
   color: var(--ink);
   font-family: 'Noto Serif KR', serif;
+  min-height: 100vh;
   overflow-x: hidden;
-}
-
-button, a {
-  font: inherit;
 }
 
 .page {
@@ -40,233 +34,189 @@ button, a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 16px 32px;
+  padding: 18px 16px 40px;
 }
 
-.roof {
-  position: relative;
-  width: 100%;
-  height: 76px;
-  margin-bottom: 18px;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 24px,
-      rgba(245,240,231,.9) 24px 29px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      var(--green) 0 42px,
-      var(--red) 42px 76px,
-      var(--gold) 76px 88px,
-      var(--brown) 88px 130px
-    );
-  border-bottom: 9px solid var(--brown);
-  box-shadow: 0 5px 0 rgba(111,56,39,.12);
-  clip-path: polygon(0 0,100% 0,100% 48%,94% 48%,94% 67%,
-  6% 67%,6% 48%,0 48%);
-}
-
-.roof::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 12px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--gold) 0 4px,
-    var(--red) 4px 8px,
-    var(--green) 8px 12px
-  );
-}
-
-.intro {
+/* 상단 제목 */
+header {
   text-align: center;
-  margin: 0 0 16px;
-  transition: opacity .5s, transform .5s;
+  margin-bottom: 24px;
 }
 
 .eyebrow {
+  color: #8b765d;
   font-size: 11px;
-  letter-spacing: .28em;
-  color: #89745c;
+  letter-spacing: 4px;
   margin-bottom: 8px;
 }
 
 h1 {
-  font-size: clamp(21px, 3vw, 30px);
-  font-weight: 600;
-  letter-spacing: -.04em;
   margin: 0;
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 600;
+  letter-spacing: -1.5px;
 }
 
 .subtitle {
-  font-size: 12px;
-  color: #88796a;
-  margin-top: 8px;
+  margin-top: 10px;
+  color: #8b7b69;
+  font-size: 14px;
 }
 
+/* 전통 단청 처마 */
+.roof {
+  width: 100%;
+  height: 24px;
+  margin-bottom: 20px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #173f32 0 24px,
+      #c39b48 24px 30px,
+      #a04432 30px 52px,
+      #e2c77d 52px 58px,
+      #173f32 58px 80px
+    );
+  border-top: 5px solid #6f3827;
+  border-bottom: 5px solid #6f3827;
+}
+
+/* 문 전체 */
 .gate-area {
-  width: min(100%, 1000px);
-  height: clamp(430px, 66vh, 690px);
-  min-height: 430px;
+  width: min(95vw, 1250px);
+  height: clamp(420px, 65vh, 700px);
   position: relative;
-  perspective: 1500px;
+  perspective: 1800px;
   transition: width .8s, height .8s;
 }
 
 .gate-frame {
   position: absolute;
   inset: 0;
-  padding: 15px;
-  background: #d8c5a5;
+  padding: 8px;
   border: 5px solid #6f3827;
+  background: #c69a48;
   box-shadow:
-    inset 0 0 0 4px #c69a48,
-    0 14px 30px rgba(51,45,40,.17);
-  transition: transform .8s, inset .8s;
-  overflow: hidden;
-}
-
-.gate-frame::before {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border: 2px solid #8e5d35;
-  pointer-events: none;
-  z-index: 3;
+    inset 0 0 0 3px #f0d99a,
+    inset 0 0 0 7px #9c6933,
+    0 18px 36px rgba(51,45,40,.18);
 }
 
 .gate {
   position: absolute;
-  inset: 15px;
+  inset: 8px;
   display: flex;
+  overflow: hidden;
+  background: #174333;
   transform-style: preserve-3d;
 }
 
+/*
+  palace-door.jpg는 두 번째 이미지 파일입니다.
+  사진 전체를 좌우 절반으로 나눠 각 문짝에 표시합니다.
+*/
 .door {
-  position: relative;
   width: 50%;
   height: 100%;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 10px,
-      rgba(45,20,13,.17) 10px 13px,
-      rgba(255,220,170,.08) 13px 18px
-    ),
-    linear-gradient(90deg, #6e291f, #9b3c2b 18%, #7c2b21 50%, #9b3c2b 82%, #64251d);
-  border: 5px solid #c69a48;
-  box-shadow: inset 0 0 0 5px #6d3024;
-  transition: transform 1.45s cubic-bezier(.68,-.05,.25,1);
+  position: relative;
+  background-image: url("palace-door.jpg");
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  border: 3px solid #d5b15d;
+  box-shadow: inset 0 0 0 3px rgba(21,57,43,.35);
   transform-style: preserve-3d;
+  transition: transform 1.6s cubic-bezier(.65,0,.25,1);
   overflow: hidden;
 }
 
 .door.left {
+  background-position: left center;
   transform-origin: left center;
-  border-right: 3px solid #d5ae64;
+  border-right: 2px solid #e5c66e;
 }
 
 .door.right {
+  background-position: right center;
   transform-origin: right center;
-  border-left: 3px solid #d5ae64;
+  border-left: 2px solid #e5c66e;
 }
 
-.door::before {
-  content: "";
-  position: absolute;
-  inset: 15px;
-  border: 2px solid #d0a45b;
-  box-shadow:
-    inset 0 0 0 7px rgba(55,24,17,.35),
-    inset 0 0 0 10px rgba(208,164,91,.5);
-}
-
+/* 사진 위에 얇은 금색 테두리 */
 .door::after {
   content: "";
   position: absolute;
-  inset: 32px 25px;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 65px,
-      rgba(213,174,100,.75) 65px 69px
-    );
-  border-left: 2px solid rgba(213,174,100,.55);
-  border-right: 2px solid rgba(213,174,100,.55);
+  inset: 10px;
+  border: 2px solid rgba(224,190,104,.8);
+  box-shadow: inset 0 0 0 2px rgba(22,60,44,.18);
+  pointer-events: none;
 }
 
-.panel {
-  position: absolute;
-  top: 10%;
-  bottom: 10%;
-  left: 15%;
-  right: 15%;
-  border: 3px solid #d2a65d;
-  background: rgba(64,23,17,.16);
-}
-
+/* 가운데 문고리 */
 .knocker {
   position: absolute;
-  z-index: 5;
   top: 50%;
-  width: clamp(42px, 6vw, 68px);
-  height: clamp(42px, 6vw, 68px);
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f6d993, #c08a34 55%, #71451d);
-  border: 4px double #f0d28d;
-  box-shadow: 0 4px 8px rgba(0,0,0,.28);
-  transform: translate(-50%,-50%);
-  transition: opacity .25s, transform .4s;
+  z-index: 5;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #fff0b0,
+    #e5bd59 45%,
+    #9d6a24 80%
+  );
+  border: 4px double #fff0b0;
+  box-shadow: 0 3px 8px rgba(0,0,0,.3);
+  transform: translate(-50%, -50%);
+  transition: opacity .3s, transform .3s;
 }
 
 .left .knocker {
-  right: -34px;
+  right: -27px;
 }
 
 .right .knocker {
-  left: -34px;
+  left: -27px;
 }
 
 .knocker::before {
   content: "";
   position: absolute;
-  inset: 12px;
-  border: 3px solid #70451e;
+  inset: 10px;
+  border: 3px solid #80551f;
   border-radius: 50%;
 }
 
 .knocker::after {
   content: "";
   position: absolute;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
+  width: 13px;
+  height: 13px;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
-  background: #6f3827;
-  border: 2px solid #edc77a;
+  background: #70431c;
+  border: 2px solid #f5d988;
+  border-radius: 50%;
 }
 
+/* 세 번 두드린 뒤 문 확대 */
 .gate-area.zoomed {
-  width: min(100%, 1180px);
-  height: clamp(520px, 78vh, 850px);
+  width: min(98vw, 1450px);
+  height: clamp(500px, 75vh, 850px);
 }
 
 .gate-area.zoomed .gate-frame {
-  inset: -12px;
+  inset: -6px;
 }
 
+/* 양쪽 문이 바깥쪽으로 열림 */
 .gate-area.open .door.left {
-  transform: perspective(1200px) rotateY(-105deg);
+  transform: rotateY(-110deg);
 }
 
 .gate-area.open .door.right {
-  transform: perspective(1200px) rotateY(105deg);
+  transform: rotateY(110deg);
 }
 
 .gate-area.open .knocker {
@@ -274,62 +224,50 @@ h1 {
   transform: translate(-50%,-50%) scale(.5);
 }
 
+/* 두드리기 버튼 */
 .controls {
+  margin-top: 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
 }
 
 .knock-button {
-  border: 1px solid var(--brown);
-  color: var(--ivory);
   background: var(--brown);
-  padding: 12px 30px;
+  color: #f8f0df;
+  border: 1px solid #9b7148;
+  padding: 14px 34px;
+  font-size: 17px;
   cursor: pointer;
   transition: background .2s, transform .2s;
 }
 
 .knock-button:hover {
-  background: #874732;
+  background: #874832;
   transform: translateY(-2px);
 }
 
 .knock-button:disabled {
-  opacity: .55;
+  opacity: .6;
   cursor: default;
-  transform: none;
 }
 
 .hint {
   font-size: 12px;
-  color: #8a7968;
+  color: #8b7b69;
 }
 
-.home-button {
-  display: none;
-  margin-top: 12px;
-  text-decoration: none;
-  color: var(--brown);
-  border: 1px solid #b7a38a;
-  padding: 10px 24px;
-  background: rgba(255,255,255,.35);
-}
-
-.home-button:hover {
-  background: #e9dfcf;
-}
-
+/* 문이 열린 뒤 나타나는 인물 */
 .person-card {
   display: none;
-  width: min(90%, 650px);
-  margin: 30px auto 0;
-  padding: 28px 20px;
-  background: rgba(255,255,255,.42);
-  border: 1px solid #d6c6ae;
+  width: min(90vw, 650px);
+  margin-top: 32px;
+  padding: 30px 22px;
   text-align: center;
-  animation: appear .9s both;
+  background: rgba(255,255,255,.45);
+  border: 1px solid #d6c6ae;
+  animation: appear .8s ease both;
 }
 
 .person-card.visible {
@@ -338,35 +276,34 @@ h1 {
 
 .person-label {
   font-size: 11px;
-  letter-spacing: .2em;
-  color: #90704a;
+  letter-spacing: 3px;
+  color: #98764a;
 }
 
 .person-name {
   font-size: clamp(28px, 5vw, 42px);
+  margin: 12px 0;
   font-weight: 700;
-  margin: 10px 0;
 }
 
 .person-description {
-  line-height: 1.9;
   font-size: 15px;
+  line-height: 1.9;
   color: #62564a;
 }
 
-.person-note {
-  margin-top: 18px;
-  font-size: 11px;
-  color: #988875;
+.home-button {
+  display: none;
+  margin-top: 20px;
+  padding: 11px 24px;
+  border: 1px solid #b7a38a;
+  color: var(--brown);
+  background: transparent;
+  text-decoration: none;
 }
 
-@keyframes appear {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-body.unlocked .intro {
-  opacity: .45;
+.home-button:hover {
+  background: #e9dfcf;
 }
 
 body.unlocked .controls {
@@ -377,18 +314,69 @@ body.unlocked .home-button {
   display: inline-block;
 }
 
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 모바일 */
 @media (max-width: 600px) {
-  .page { padding: 0 8px 24px; }
-  .roof { height: 58px; margin-bottom: 18px; }
-  .gate-area { height: 58vh; min-height: 400px; }
-  .gate-frame { padding: 9px; }
-  .gate { inset: 9px; }
-  .door { border-width: 3px; }
-  .door::before { inset: 10px; }
-  .door::after { inset: 22px 12px; }
-  .panel { left: 12%; right: 12%; }
-  .gate-area.zoomed { height: 68vh; min-height: 470px; }
-  .person-card { padding: 22px 14px; }
+  .page {
+    padding: 14px 7px 30px;
+  }
+
+  header {
+    margin-bottom: 20px;
+  }
+
+  .roof {
+    height: 18px;
+    margin-bottom: 18px;
+  }
+
+  .gate-area {
+    width: 97vw;
+    height: 55vh;
+    min-height: 380px;
+  }
+
+  .gate-frame {
+    padding: 5px;
+  }
+
+  .gate {
+    inset: 5px;
+  }
+
+  .door {
+    border-width: 2px;
+  }
+
+  .door::after {
+    inset: 5px;
+  }
+
+  .knocker {
+    width: 42px;
+    height: 42px;
+  }
+
+  .gate-area.zoomed {
+    width: 99vw;
+    height: 66vh;
+    min-height: 440px;
+  }
+
+  .knock-button {
+    padding: 12px 25px;
+    font-size: 15px;
+  }
 }
 </style>
 </head>
@@ -398,23 +386,24 @@ body.unlocked .home-button {
 
   <div class="roof" aria-hidden="true"></div>
 
-  <header class="intro">
+  <header>
     <div class="eyebrow">DAILY HISTORY FACT</div>
     <h1>역사관의 문을 두드리다</h1>
     <div class="subtitle">문 너머에서 오늘의 역사를 만나보세요.</div>
   </header>
 
-  <section class="gate-area" id="gateArea" aria-label="궁궐의 문">
+  <section class="gate-area" id="gateArea" aria-label="궁궐의 전통 문">
     <div class="gate-frame">
       <div class="gate" id="gate">
+
         <div class="door left">
-          <div class="panel"></div>
           <div class="knocker"></div>
         </div>
+
         <div class="door right">
-          <div class="panel"></div>
           <div class="knocker"></div>
         </div>
+
       </div>
     </div>
   </section>
@@ -423,29 +412,30 @@ body.unlocked .home-button {
     <button class="knock-button" id="knockButton">
       문고리 두드리기 · 0 / 3
     </button>
-    <div class="hint" id="hint">문고리를 세 번 두드려 보세요.</div>
+    <div class="hint" id="hint">
+      문고리를 세 번 두드려 보세요.
+    </div>
   </div>
 
   <section class="person-card" id="personCard">
     <div class="person-label">TODAY'S HISTORICAL FIGURE</div>
-    <div class="person-name" id="personName">세종대왕</div>
-    <div class="person-description" id="personDescription">
+    <div class="person-name">세종대왕</div>
+    <div class="person-description">
       훈민정음 창제를 통해 백성이 쉽게 글을 익힐 수 있도록 했습니다.
-    </div>
-    <div class="person-note">
-      오늘의 인물은 예시입니다. 실제 인물 데이터와 연결해 사용할 수 있습니다.
     </div>
   </section>
 
-  <a class="home-button" href="./home.html">홈페이지로 가기 →</a>
+  <a class="home-button" href="./home.html">
+    홈페이지로 가기 →
+  </a>
 
 </main>
 
 <script>
-const gateArea = document.getElementById('gateArea');
-const knockButton = document.getElementById('knockButton');
-const hint = document.getElementById('hint');
-const personCard = document.getElementById('personCard');
+const gateArea = document.getElementById("gateArea");
+const knockButton = document.getElementById("knockButton");
+const hint = document.getElementById("hint");
+const personCard = document.getElementById("personCard");
 
 let knocks = 0;
 let opening = false;
@@ -454,55 +444,56 @@ function knock() {
   if (opening) return;
 
   knocks++;
-  knockButton.textContent = `문고리 두드리기 · ${knocks} / 3`;
+
+  knockButton.textContent =
+    `문고리 두드리기 · ${knocks} / 3`;
 
   gateArea.animate(
     [
-      { transform: 'translateX(0)' },
-      { transform: 'translateX(-5px)' },
-      { transform: 'translateX(5px)' },
-      { transform: 'translateX(-3px)' },
-      { transform: 'translateX(0)' }
+      { transform: "translateX(0)" },
+      { transform: "translateX(-4px)" },
+      { transform: "translateX(4px)" },
+      { transform: "translateX(0)" }
     ],
-    { duration: 240, easing: 'ease-out' }
+    { duration: 220 }
   );
 
   if (knocks < 3) {
     hint.textContent = knocks === 1
-      ? '첫 번째 두드림이 울려 퍼집니다.'
-      : '문 안쪽에서 인기척이 느껴집니다.';
+      ? "첫 번째 두드림이 울려 퍼집니다."
+      : "문 안쪽에서 인기척이 느껴집니다.";
     return;
   }
 
   opening = true;
   knockButton.disabled = true;
-  hint.textContent = '역사의 문이 열립니다…';
+  hint.textContent = "역사의 문이 열립니다…";
 
-  gateArea.classList.add('zoomed');
+  gateArea.classList.add("zoomed");
 
   setTimeout(() => {
-    gateArea.classList.add('open');
+    gateArea.classList.add("open");
   }, 650);
 
   setTimeout(() => {
-    document.body.classList.add('unlocked');
-    personCard.classList.add('visible');
-    hint.textContent = '';
+    document.body.classList.add("unlocked");
+    personCard.classList.add("visible");
+
     personCard.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
+      behavior: "smooth",
+      block: "center"
     });
-  }, 1900);
+  }, 2100);
 }
 
-knockButton.addEventListener('click', knock);
+knockButton.addEventListener("click", knock);
 
-// 문 자체를 눌러도 두드릴 수 있습니다.
-gateArea.addEventListener('click', (event) => {
-  if (!opening && event.target.closest('.door')) {
+gateArea.addEventListener("click", (event) => {
+  if (!opening && event.target.closest(".door")) {
     knock();
   }
 });
 </script>
+
 </body>
 </html>
